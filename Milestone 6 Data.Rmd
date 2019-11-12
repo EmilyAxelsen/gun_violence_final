@@ -1,0 +1,166 @@
+---
+title: "Milestone 6 Data"
+author: "Emily Axelsen"
+date: "10/31/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(plyr)
+```
+
+```{r}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+gun_violence <- read_csv("gun-violence-data_01-2013_03-2018.csv", col_types = cols(
+  .default = col_character(),
+  incident_id = col_double(),
+  date = col_date(format = ""),
+  n_killed = col_double(),
+  n_injured = col_double(),
+  incident_url_fields_missing = col_logical(),
+  congressional_district = col_double(),
+  latitude = col_double(),
+  longitude = col_double(),
+  n_guns_involved = col_double(),
+  state_house_district = col_double(),
+  state_senate_district = col_double()
+))
+```
+
+```{r reading in background check data, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+background_checks <- read_csv("nics-firearm-background-checks copy.csv", col_types = cols(
+  month = col_character(),
+  state = col_character(),
+  permit = col_double(),
+  permit_recheck = col_double(),
+  handgun = col_double(),
+  long_gun = col_double(),
+  other = col_double(),
+  multiple = col_double(),
+  admin = col_double(),
+  prepawn_handgun = col_double(),
+  prepawn_long_gun = col_double(),
+  prepawn_other = col_double(),
+  redemption_handgun = col_double(),
+  redemption_long_gun = col_double(),
+  redemption_other = col_double(),
+  returned_handgun = col_double(),
+  returned_long_gun = col_double(),
+  returned_other = col_double(),
+  rentals_handgun = col_double(),
+  rentals_long_gun = col_double(),
+  private_sale_handgun = col_double(),
+  private_sale_long_gun = col_double(),
+  private_sale_other = col_double(),
+  return_to_seller_handgun = col_double(),
+  return_to_seller_long_gun = col_double(),
+  return_to_seller_other = col_double(),
+  totals = col_double()
+))
+```
+
+
+```{r reading in state policy data, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+state_policy <- read_csv("correlatesofstatepolicyprojectv2_1 copy.csv", col_types = cols(
+  .default = col_double(),
+  state = col_character(),
+  st = col_character(),
+  undocumented_immigrants = col_character(),
+  budg_lag_from_fy_end = col_logical(),
+  change_amustax = col_logical(),
+  change_docstocktax = col_logical(),
+  change_sevtax = col_logical(),
+  change_tobtax = col_logical(),
+  change_vehtax = col_logical(),
+  legislative_total_exp1_note = col_logical(),
+  X = col_logical(),
+  integrity = col_character(),
+  govname1 = col_character(),
+  govname1_sour = col_character(),
+  govname1_date = col_character(),
+  govname2 = col_character(),
+  govname2_sour = col_character(),
+  govname2_date = col_character(),
+  govname2_notes = col_character(),
+  gov_midyear_change_date = col_character(),
+  when_leg_met2011_04_13 = col_character(),
+  gov_midyear_change_b_note = col_character(),
+  past_gov_note = col_character(),
+  gov_midyear_change_c_note = col_character(),
+  new_gov_c = col_character(),
+  new_gov_d = col_character(),
+  fracleg_old_variable_note = col_character(),
+  years_served_budgets_overseen_no = col_character(),
+  limit_exists = col_character(),
+  limit_type = col_character(),
+  term_limit_length_uncertainty = col_character(),
+  years_left_before_limit_note = col_character(),
+  lame_duck_last_term = col_character(),
+  lame_duck_notes = col_character(),
+  femgov = col_character(),
+  femgov_notes = col_character(),
+  stateleg = col_character(),
+  stateleg_source = col_character(),
+  congmem = col_character(),
+  congmem_sour = col_character(),
+  stateleg_congmem_notes = col_character(),
+  abor_athosp = col_character(),
+  abor_secphys = col_character(),
+  information_practices_code = col_logical(),
+  universalprek = col_logical(),
+  victims_of_crime_act__model = col_logical(),
+  fcap = col_character(),
+  frent = col_character(),
+  fwrlurim = col_character(),
+  kstatsum = col_character(),
+  knlc = col_character(),
+  knps = col_character(),
+  knpindex = col_character(),
+  kttack = col_character(),
+  klicsurv = col_character(),
+  Ddlstr = col_character(),
+  Bipcraw = col_character(),
+  bipt = col_character(),
+  bstheft = col_character(),
+  Blocks = col_character(),
+  bdtr = col_character(),
+  bss = col_character(),
+  bsbr = col_character(),
+  bsbs = col_character(),
+  baow = col_character(),
+  `_merge` = col_character()
+))
+```
+
+```{r loading in US Cities data}
+us_cities <- read_csv("uscities copy.csv", col_types = cols(
+  city = col_character(),
+  city_ascii = col_character(),
+  state_id = col_character(),
+  state_name = col_character(),
+  county_fips = col_double(),
+  county_name = col_character(),
+  county_fips_all = col_character(),
+  county_name_all = col_character(),
+  lat = col_double(),
+  lng = col_double(),
+  population = col_double(),
+  density = col_double(),
+  source = col_character(),
+  military = col_logical(),
+  incorporated = col_logical(),
+  timezone = col_character(),
+  ranking = col_double(),
+  zips = col_character(),
+  id = col_double()
+))
+```
+
+
+
+
+
