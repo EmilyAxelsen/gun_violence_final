@@ -1,5 +1,5 @@
 ---
-title: "Milestone 6 Data"
+title: "Reading in Data"
 author: "Emily Axelsen"
 date: "10/31/2019"
 output: html_document
@@ -139,6 +139,11 @@ state_policy <- read_csv("data/correlatesofstatepolicyprojectv2_1 copy.csv", col
 
 ```{r}
 population <- read_xlsx('data/Population Data.xlsx', range = cell_rows(2:57))
+
+
+# Source: https://www.census.gov/data/tables/time-series/demo/popest/2010s-state-total.html
+
+
 ```
 
 

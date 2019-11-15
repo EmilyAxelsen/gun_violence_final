@@ -1,0 +1,28 @@
+---
+title: "Map"
+author: "Emily Axelsen"
+date: "11/15/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Shapefile link: https://www.arcgis.com/home/item.html?id=f7f805eb65eb4ab787a0a3e1116ca7e5
+
+shape_initial <- readRDS("final data/map_us.rds")
+location_initial <- readRDS("final data/locations.rds")
+
+
+```
+
+```{r}
+B <- final_gun_violence_data %>%
+  group_by(state) %>%
+  add_count(state, year)
+
+ggplot() + 
+  geom_sf(data = shape_initial) +
+  geom_sf(data = locations_initial)
+```
+
