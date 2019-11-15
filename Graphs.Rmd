@@ -354,7 +354,7 @@ G <- ggplot(permit_2018, aes(x = reorder(state, permit), y = permit, fill = stat
 G
 ```
 
-
+#Linear Regression Plot:
 
 ```{r}
 # final_gun_violence_data %>%
