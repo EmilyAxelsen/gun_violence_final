@@ -19,8 +19,13 @@ final_gun_violence_data <- readRDS("final data/final_data.rds")
 ```{r Graph Showing Permits Granted Per Month in 2013}
 final_gun_violence_data %>%
   filter(year == 2013) %>%
-  ggplot(aes(x = month, y = permit)) + 
-  geom_bar(stat = 'identity')
+  ggplot(aes(x = month, y = permit, fill = month)) + 
+  geom_bar(stat = 'identity', show.legend = FALSE) +
+  labs(x = "Month", 
+       y = "Number of Permits Granted",
+       title = "The Number of Gun Permits Granted Per Month in 2013",
+       subtitle = "Do Gun Permits Sold Increase in Summer Months?",
+       caption = "Source: The National Instant Criminal Background Check System")
 ```
 
 
@@ -33,18 +38,28 @@ permit_2013 <- final_gun_violence_data %>%
   arrange(desc(permit))  %>%
   slice(1:10)
 
-ggplot(permit_2013, aes(x = state, y = permit)) +
-  geom_col()
 
-ggplot(permit_2013, aes(x = reorder(state, permit), y = permit, fill = state)) +
+A <- ggplot(permit_2013, aes(x = reorder(state, permit), y = permit, fill = state)) +
   geom_col(show.legend = FALSE) +
   coord_flip() +
   labs(x = "State", 
        y = "Number of Permits Granted",
-       title = "The Number of Gun Permits Granted Per State in 2013",
-       subtitle = "The 10 States With That Granted The Highest Number of Permits in 2013",
+       title = "The Number of Gun Permits Granted Per State in June, 2013",
+       subtitle = "The 10 States With That Granted The Highest Number of Permits in June, 2013",
        caption = "Source: The National Instant Criminal Background Check System")
 ```
+
+```{r Printing Graph}
+A
+```
+
+```{r}
+final_gun_violence_data %>%
+  filter(year == 20123)
+```
+
+
+
 
 ```{r}
 final_gun_violence_data %>%
