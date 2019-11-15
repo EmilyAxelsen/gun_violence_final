@@ -65,7 +65,7 @@ n_incidents <- final_gun_violence_data %>%
     n = "Number of Incidents",
     state = "State") %>%
   tab_header(title = "Number of Gun Violence Incidents In June 2013", 
-             subtitle = "The top ten states that granted the highest number of permits are formatted in bold text.") %>%
+             subtitle = "The top ten states that granted the highest number of permits are formatted in bold text and with the same color as the 2013 gun permit bar graph.") %>%
   tab_style(
     style = list(
       cell_fill(color = "#3ab600"),
