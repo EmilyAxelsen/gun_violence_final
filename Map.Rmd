@@ -42,12 +42,10 @@ B <- location_initial %>%
   group_by(state) %>%
   add_count(state, year)
 
-ggplot() + 
-  geom_sf(data = shape_initial) +
-  geom_sf(data = B)
-
 
 ggplot(data = us_tbl, aes(geometry = geometry)) + 
-  geom_sf(data = B)
+  geom_sf(data = B) +
+  transition_time(year)
+
 ```
 
