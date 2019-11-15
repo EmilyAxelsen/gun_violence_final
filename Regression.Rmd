@@ -6,10 +6,25 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(gt)
+library(tidyverse)
+library(rstanarm)
+library(broom)
+library(cowplot)
+library(ggridges)
+library(tidyverse)
+library(infer)
 ```
 
+```{r Reading in Data}
+final_gun_violence_data <- readRDS("final data/final_data.rds")
+```
+
+
+
 ```{r}
-lm.object <- stan_lm(formula = permits ~ n_incidents, prior = NULL, data = new_members)
+lm.object <- stan_lm(formula = permit ~ n_incidents, prior = NULL, data = final_gun_violence_data)
 ```
 
