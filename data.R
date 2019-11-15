@@ -83,8 +83,7 @@ proper_names <- mutate(simple_population, state= recode(state, "'.Alabama'='Alab
 
 
 
-final_data <- inner_join(compiled1, proper_names, by = c("state", "year")) %>% 
-  na.omit()
+final_data <- inner_join(compiled1, proper_names, by = c("state", "year")) 
 
 saveRDS(final_data, "final_data.rds")
 

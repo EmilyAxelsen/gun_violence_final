@@ -1,0 +1,83 @@
+---
+title: "graph 1"
+author: "Emily Axelsen"
+date: "11/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(tidyverse)
+```
+
+```{r Reading in Data}
+final_gun_violence_data <- readRDS("final data/final_data.rds")
+```
+
+
+```{r Graph Showing Permits Granted Per Month in 2013}
+final_gun_violence_data %>%
+  filter(year == 2013) %>%
+  ggplot(aes(x = month, y = permit)) + 
+  geom_bar(stat = 'identity')
+```
+
+
+```{r}
+permit_2013 <- final_gun_violence_data %>%
+  select(state, permit, year, month) %>%
+  filter(month == "06") %>%
+  filter(year == 2013) %>%
+  unique() %>%
+  arrange(desc(permit))  %>%
+  slice(1:10)
+
+ggplot(permit_2013, aes(x = state, y = permit)) +
+  geom_col()
+
+ggplot(permit_2013, aes(x = reorder(state, permit), y = permit, fill = state)) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(x = "State", 
+       y = "Number of Permits Granted",
+       title = "The Number of Gun Permits Granted Per State in 2013",
+       subtitle = "The 10 States With That Granted The Highest Number of Permits in 2013",
+       caption = "Source: The National Instant Criminal Background Check System")
+```
+
+```{r}
+final_gun_violence_data %>%
+  filter(year == 2014) %>%
+  ggplot(aes(x = month, y = permit)) + 
+  geom_bar(stat = 'identity')
+```
+
+```{r}
+permit_2013 <- final_gun_violence_data %>%
+  select(state, permit, year, month) %>%
+  filter(month == "03") %>%
+  filter(year == 2014) %>%
+  arrange(desc(permit)) %>%
+  slice(1:10)
+
+ggplot(permit_2013, aes(x = reorder(state, permit), y = permit, fill = state)) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(x = "State", 
+       y = "Number of Permits Granted",
+       title = "The Number of Gun Permits Granted Per State in 2013",
+       subtitle = "The 10 States With That Granted The Highest Number of Permits in 2013",
+       caption = "Source: The National Instant Criminal Background Check System")
+```
+
+
+
+```{r}
+compiled1 %>%
+  filter(year == 2015) %>%
+  ggplot(aes(x = log(permit + 1), y = log(n_incidents + 1))) +
+  geom_point() + 
+  geom_smooth(method = 'lm', se = F, col = 'black')
+```
+
