@@ -54,8 +54,26 @@ A
 ```
 
 ```{r}
-final_gun_violence_data %>%
-  filter(year == 20123)
+
+n_incidents <- final_gun_violence_data %>%
+  filter(year == 2013) %>%
+  count(state) 
+
+thirteen <- final_gun_violence_data %>%
+  filter(month == "06") %>%
+  filter(year == 2013) %>%
+  mutate(incidents = n_incidents)
+
+ggplot(thirteen, aes(x = state, y = permit)) +
+  geom_point()
+
+```
+
+
+```{r}
+ggplot(final_gun_violence_data, aes(x = reorder(population, state), y = state)) +
+  geom_point()
+  
 ```
 
 
