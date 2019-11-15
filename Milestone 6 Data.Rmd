@@ -7,13 +7,14 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(janitor)
+library(readxl)
 library(tidyverse)
-library(plyr)
 ```
 
 ```{r}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-gun_violence <- read_csv("gun-violence-data_01-2013_03-2018.csv", col_types = cols(
+gun_violence <- read_csv("data/gun-violence-data_01-2013_03-2018.csv", col_types = cols(
   .default = col_character(),
   incident_id = col_double(),
   date = col_date(format = ""),
@@ -31,7 +32,7 @@ gun_violence <- read_csv("gun-violence-data_01-2013_03-2018.csv", col_types = co
 
 ```{r reading in background check data, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-background_checks <- read_csv("nics-firearm-background-checks copy.csv", col_types = cols(
+background_checks <- read_csv("data/nics-firearm-background-checks copy.csv", col_types = cols(
   month = col_character(),
   state = col_character(),
   permit = col_double(),
@@ -65,7 +66,7 @@ background_checks <- read_csv("nics-firearm-background-checks copy.csv", col_typ
 
 ```{r reading in state policy data, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-state_policy <- read_csv("correlatesofstatepolicyprojectv2_1 copy.csv", col_types = cols(
+state_policy <- read_csv("data/correlatesofstatepolicyprojectv2_1 copy.csv", col_types = cols(
   .default = col_double(),
   state = col_character(),
   st = col_character(),
@@ -136,29 +137,10 @@ state_policy <- read_csv("correlatesofstatepolicyprojectv2_1 copy.csv", col_type
 ))
 ```
 
-```{r loading in US Cities data}
-us_cities <- read_csv("uscities copy.csv", col_types = cols(
-  city = col_character(),
-  city_ascii = col_character(),
-  state_id = col_character(),
-  state_name = col_character(),
-  county_fips = col_double(),
-  county_name = col_character(),
-  county_fips_all = col_character(),
-  county_name_all = col_character(),
-  lat = col_double(),
-  lng = col_double(),
-  population = col_double(),
-  density = col_double(),
-  source = col_character(),
-  military = col_logical(),
-  incorporated = col_logical(),
-  timezone = col_character(),
-  ranking = col_double(),
-  zips = col_character(),
-  id = col_double()
-))
+```{r}
+population <- read_xlsx('data/Population Data.xlsx', range = cell_rows(2:57))
 ```
+
 
 
 
