@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(ggplot2)
+library(gt)
 library(tidyverse)
 ```
 
@@ -57,22 +58,100 @@ A
 
 n_incidents <- final_gun_violence_data %>%
   filter(year == 2013) %>%
-  count(state) 
-
-thirteen <- final_gun_violence_data %>%
-  filter(month == "06") %>%
-  filter(year == 2013) %>%
-  mutate(incidents = n_incidents)
-
-ggplot(thirteen, aes(x = state, y = permit)) +
-  geom_point()
+  count(state) %>%
+  arrange(desc(n)) %>%
+  gt() %>%
+  cols_label(
+    n = "Number of Incidents",
+    state = "State") %>%
+  tab_header(title = "Number of Gun Violence Incidents In June 2013", 
+             subtitle = "The top ten states that granted the highest number of permits are formatted in bold text.") %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#3ab600"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(3))) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#f8766d"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(1))) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#ff62bb"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(9))) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#01bec4"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(8))) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#01afff"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(2))) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#02bf7d"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(13))) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#e86bf3"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(12))) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#a2a500"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(14))) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#d89000"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(22))) %>%
+  tab_style(
+    style = list(
+      cell_fill(color = "#9690ff"),
+      cell_text(weight = "bold")
+      ),
+    locations = cells_data(
+      columns = vars(state, n),
+      rows = c(14)))
 
 ```
 
 
 ```{r}
-ggplot(final_gun_violence_data, aes(x = reorder(population, state), y = state)) +
-  geom_point()
+n_incidents
   
 ```
 
@@ -107,10 +186,10 @@ ggplot(permit_2013, aes(x = reorder(state, permit), y = permit, fill = state)) +
 
 
 ```{r}
-compiled1 %>%
-  filter(year == 2015) %>%
-  ggplot(aes(x = log(permit + 1), y = log(n_incidents + 1))) +
-  geom_point() + 
-  geom_smooth(method = 'lm', se = F, col = 'black')
+# final_gun_violence_data %>%
+#   filter(year == 2015) %>%
+#   ggplot(aes(x = log(permit + 1), y = log(n_incidents + 1))) +
+#   geom_point() + 
+#   geom_smooth(method = 'lm', se = F, col = 'black')
 ```
 
