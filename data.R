@@ -87,3 +87,5 @@ final_data <- inner_join(compiled1, proper_names, by = c("state", "year"))
 
 saveRDS(final_data, "final_data.rds")
 
+
+

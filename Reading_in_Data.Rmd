@@ -66,7 +66,7 @@ background_checks <- read_csv("data/nics-firearm-background-checks copy.csv", co
 
 ```{r reading in state policy data, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
-state_policy <- read_csv("data/correlatesofstatepolicyprojectv2_1 copy.csv", col_types = cols(
+policies <- read_csv("data/correlatesofstatepolicyprojectv2_1 copy.csv", col_types = cols(
   .default = col_double(),
   state = col_character(),
   st = col_character(),
@@ -145,6 +145,7 @@ population <- read_xlsx('data/Population Data.xlsx', range = cell_rows(2:57))
 
 
 ```
+
 
 
 

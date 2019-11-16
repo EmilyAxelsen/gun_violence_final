@@ -25,6 +25,7 @@ final_gun_violence_data <- readRDS("final data/final_data.rds")
 
 
 ```{r}
-lm.object <- stan_lm(formula = permit ~ n_incidents, prior = NULL, data = final_gun_violence_data)
+state_policy %>%
+lm.object <- stan_lm(formula = permit1 ~ n_incidents1, prior = NULL, data = final_gun_violence_data)
 ```
 
