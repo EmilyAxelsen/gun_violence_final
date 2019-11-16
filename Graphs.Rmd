@@ -1,5 +1,5 @@
 ---
-title: "graph 1"
+title: "Graphs"
 author: "Emily Axelsen"
 date: "11/11/2019"
 output: html_document
@@ -357,10 +357,30 @@ G
 #Linear Regression Plot:
 
 ```{r}
-# final_gun_violence_data %>%
-#   filter(year == 2015) %>%
-#   ggplot(aes(x = log(permit + 1), y = log(n_incidents + 1))) +
-#   geom_point() + 
-#   geom_smooth(method = 'lm', se = F, col = 'black')
+n_incidents1 <- final_gun_violence_data %>%
+  count(state) %>%
+  arrange(desc(n)) 
+
+permit1 <- final_gun_violence_data %>%
+  count(state, permit) %>% 
+  group_by(state) %>% 
+  summarize(avg=mean(n)) 
+
+incident_permit_data <- inner_join(n_incidents1, permit1, by = "state")
+
+```
+
+
+```{r}
+incident_permit_data %>%
+  ggplot(aes(x = log(n), y = log(avg), color = state)) +
+  geom_jitter(show.legend = FALSE) +
+  geom_smooth(method = 'lm', se = F, col = 'black') +
+    labs(x = "Number of Gun Violence Incidents", 
+       y = "Average Permits Granted Per Month",
+       title = "Impact of Permits Granted on Number of Gun Violence Incidents",
+       subtitle = "An Analysis of the 50 US States",
+       caption = "Source: The National Instant Criminal Background Check System and ")
+
 ```
 
