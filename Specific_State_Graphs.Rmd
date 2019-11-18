@@ -45,7 +45,11 @@ final_gun_violence_data %>%
 
 ```{r}
 registration <- state_policy %>%
-  filter(w_guncontrol_registration_requir == "TRUE")
+  filter(w_guncontrol_registration_requir == "TRUE") 
+
+# insert this line into graph?? Graph where registratration is required and resulting gun violence 
+# versus registration not required and resulting gun violence
+
 ```
 
 
