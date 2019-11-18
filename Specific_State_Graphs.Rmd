@@ -1,0 +1,31 @@
+---
+title: "Specific State Graphs"
+author: "Emily Axelsen"
+date: "11/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(tidyverse)
+```
+
+
+```{r reading in data}
+final_gun_violence_data <- readRDS("final data/final_data.rds")
+```
+
+```{r}
+final_gun_violence_data %>%
+  filter(state == "Massachusetts") %>%
+  filter(city_or_county == "Boston") %>%
+  nrow()
+```
+
+```{r}
+final_gun_violence_data %>%
+  filter(state == "California") %>%
+  filter(city_or_county == "Los Angeles") %>%
+  nrow()
+```
