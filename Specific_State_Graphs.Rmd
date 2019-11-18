@@ -8,6 +8,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(ggplot2)
+library(dplyr)
+library(readxl)
 library(tidyverse)
 ```
 
@@ -15,6 +17,9 @@ library(tidyverse)
 ```{r reading in data}
 final_gun_violence_data <- readRDS("final data/final_data.rds")
 ```
+
+# David suggested I compare LA to Boston but my data doesn't back up 
+# that there's a large difference in gun violence in the two cities.
 
 ```{r}
 final_gun_violence_data %>%
@@ -29,3 +34,16 @@ final_gun_violence_data %>%
   filter(city_or_county == "Los Angeles") %>%
   nrow()
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
