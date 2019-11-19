@@ -85,7 +85,7 @@ proper_names <- mutate(simple_population, state= recode(state, "'.Alabama'='Alab
 
 final_data <- inner_join(compiled1, proper_names, by = c("state", "year")) 
 
-saveRDS(final_data, "final_data.rds")
+write_rds(final_data, "gun_violence/final_data.rds")
 
 
 state <- read_xlsx("data/correlatesofstatepolicyprojectv2_1 NEED.xlsx")

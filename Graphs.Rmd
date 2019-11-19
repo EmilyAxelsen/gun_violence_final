@@ -28,6 +28,8 @@ final_gun_violence_data %>%
        title = "The Number of Gun Permits Granted Per Month in 2013",
        subtitle = "Do Gun Permits Sold Increase in Summer Months?",
        caption = "Source: The National Instant Criminal Background Check System")
+
+ggsave("2013graph.png", path ="gun_violence")
 ```
 
 
@@ -53,11 +55,12 @@ A <- ggplot(permit_2013, aes(x = reorder(state, permit), y = permit, fill = stat
 
 ```{r Printing Graph}
 A
+ggsave("2013graph2.png", path ="gun_violence")
 ```
 
 ```{r}
 
-n_incidents <- final_gun_violence_data %>%
+n_incidentsAAA <- final_gun_violence_data %>%
   filter(year == 2013) %>%
   count(state) %>%
   arrange(desc(n)) %>%
@@ -152,8 +155,8 @@ n_incidents <- final_gun_violence_data %>%
 
 
 ```{r}
-n_incidents
-  
+n_incidentsAAA
+ggsave("2013gt.png", path ="gun_violence")  
 ```
 
 
@@ -170,6 +173,9 @@ final_gun_violence_data %>%
        title = "The Number of Gun Permits Granted Per Month in 2014",
        subtitle = "Do Gun Permits Sold Increase in Summer Months?",
        caption = "Source: The National Instant Criminal Background Check System")
+
+ggsave("2014graph.png", path ="gun_violence")
+#COMMAS
 ```
 
 
@@ -195,6 +201,8 @@ B <- ggplot(permit_2014, aes(x = reorder(state, permit), y = permit, fill = stat
 
 ```{r Printing Graph2}
 B
+
+ggsave("2014graph2.png", path ="gun_violence")
 ```
 
 
@@ -210,6 +218,8 @@ final_gun_violence_data %>%
        title = "The Number of Gun Permits Granted Per Month in 2015",
        subtitle = "Do Gun Permits Sold Increase in Summer Months?",
        caption = "Source: The National Instant Criminal Background Check System")
+
+ggsave("2015graph.png", path ="gun_violence")
 ```
 
 
@@ -235,6 +245,8 @@ C <- ggplot(permit_2015, aes(x = reorder(state, permit), y = permit, fill = stat
 
 ```{r Printing Graph3}
 C
+
+ggsave("2015graph2.png", path ="gun_violence")
 ```
 
 ### 2016 Gun Violence Graphics:
@@ -249,6 +261,7 @@ final_gun_violence_data %>%
        title = "The Number of Gun Permits Granted Per Month in 2016",
        subtitle = "Do Gun Permits Sold Increase in Summer Months?",
        caption = "Source: The National Instant Criminal Background Check System")
+ggsave("2016graph.png", path ="gun_violence")
 ```
 
 
@@ -274,6 +287,7 @@ D <- ggplot(permit_2016, aes(x = reorder(state, permit), y = permit, fill = stat
 
 ```{r Printing Graph4}
 D
+ggsave("2014graph2.png", path ="gun_violence")
 ```
 
 ### 2017 Gun Violence Graphics:
@@ -288,6 +302,7 @@ final_gun_violence_data %>%
        title = "The Number of Gun Permits Granted Per Month in 2017",
        subtitle = "Do Gun Permits Sold Increase in Summer Months?",
        caption = "Source: The National Instant Criminal Background Check System")
+ggsave("2017graph.png", path ="gun_violence")
 ```
 
 
@@ -307,12 +322,13 @@ E <- ggplot(permit_2017, aes(x = reorder(state, permit), y = permit, fill = stat
   labs(x = "State", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per State in March, 2017",
-       subtitle = "The 10 States With That Granted The Highest Number of Permits in March, 2016",
+       subtitle = "The 10 States With That Granted The Highest Number of Permits in March, 2017",
        caption = "Source: The National Instant Criminal Background Check System")
 ```
 
 ```{r Printing Graph5}
 E
+ggsave("2017graph2.png", path ="gun_violence")
 ```
 
 ### 2018 Gun Violence Graphics:
@@ -391,4 +407,10 @@ summary(m1)
 
 
 ```
+
+```{r}
+library(coefplot)
+coefplot(m1)
+```
+
 

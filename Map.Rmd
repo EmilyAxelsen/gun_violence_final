@@ -20,7 +20,7 @@ library(rgeos)
 ```
 
 
-```{r Reading in data}
+```{r Reading in data cache=TRUE}
 
 # Shapefile link: https://www.arcgis.com/home/item.html?id=f7f805eb65eb4ab787a0a3e1116ca7e5
 
