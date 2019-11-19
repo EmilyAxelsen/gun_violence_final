@@ -6,6 +6,8 @@ library(ggplot2)
 library(shinythemes)
 library(shinythemes)
 library(coefplot)
+library(gt)
+library(tidyverse)
 
 final_gun_violence_data <- read_rds("final_data.rds")
 
