@@ -90,23 +90,20 @@ saveRDS(final_data, "final_data.rds")
 
 state <- read_xlsx("data/correlatesofstatepolicyprojectv2_1 NEED.xlsx")
 
-state %>%
-  unlist(year) %>%
-  as.character(year)
+state <- state %>%
+  mutate(year = as.character(year))
 
 new_state <- state %>%
-  filter(year %in% c(2013, 2014, 2015, 2016, 2017, 2018)) %>%
   dplyr::select(state, year, guncontrol_assaultweapon_ban, w_guncontrol_waitingperiod, 
                 guncontrol_stand_your_ground, w_guncontrol_registration_requir, 
                 guncontrol_opencarry) 
-  
 
 
 saveRDS(new_state, "state_policy.rds")
 
 
-data_gun_violence <- inner_join(final_data, new_state, by = c("state", "year"))
+data_gun_violence <- left_join(final_data, new_state, by = c("state", "year"))
 
-
-
+unique(new_state$state)
+unique(final_data$state)
 

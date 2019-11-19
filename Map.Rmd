@@ -44,8 +44,8 @@ B <- location_initial %>%
 
 
 ggplot(data = us_tbl, aes(geometry = geometry)) + 
-  geom_sf(data = B) +
-  transition_time(year)
+  geom_sf(data = B, aes(size = .2)) 
+  #transition_time(year)
 
 ```
 

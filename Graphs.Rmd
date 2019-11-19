@@ -362,9 +362,12 @@ n_incidents1 <- final_gun_violence_data %>%
   arrange(desc(n)) 
 
 permit1 <- final_gun_violence_data %>%
-  count(state, permit) %>% 
-  group_by(state) %>% 
-  summarize(avg=mean(n)) 
+  group_by(year, state, permit, population) %>% 
+  summarise(n_incidents = n()) 
+
+sum(permit1$n_incidents)
+
+hist(permit1$n_incidents)
 
 incident_permit_data <- inner_join(n_incidents1, permit1, by = "state")
 
@@ -372,8 +375,8 @@ incident_permit_data <- inner_join(n_incidents1, permit1, by = "state")
 
 
 ```{r}
-incident_permit_data %>%
-  ggplot(aes(x = log(n), y = log(avg), color = state)) +
+permit1 %>%
+  ggplot(aes(x = permit, y = n_incidents, color = state)) +
   geom_jitter(show.legend = FALSE) +
   geom_smooth(method = 'lm', se = F, col = 'black') +
     labs(x = "Number of Gun Violence Incidents", 
@@ -381,6 +384,11 @@ incident_permit_data %>%
        title = "Impact of Permits Granted on Number of Gun Violence Incidents",
        subtitle = "An Analysis of the 50 US States",
        caption = "Source: The National Instant Criminal Background Check System and ")
+
+m1 <- lm(n_incidents ~ permit + population, data = permit1)
+
+summary(m1)
+
 
 ```
 
