@@ -7,32 +7,44 @@ library(shinythemes)
 library(shinythemes)
 library(coefplot)
 library(gt)
+library(plotly)
 library(tidyverse)
 
 final_gun_violence_data <- read_rds("final_data.rds")
 
+new_data <- final_gun_violence_data %>%
+    filter(year != 2018) %>%
+    mutate(year = fct_relevel(year, "2013", "2014", "2015", "2016", "2017"))
+
 
 
 ui <- fluidPage(theme = shinytheme("flatly"),
-    navbarPage("Gun Violence",
+    navbarPage("The Impact of Permits On GUn Violnece",
                 tabPanel("*Work In Progress* Graphics",
                          selectInput("chosenyear",
-                                     "Select Year:", unique(final_gun_violence_data$year)),
+                                     "Select Year:", unique(new_data$year)),
                          plotOutput("permiteighteen"),
                          plotOutput("permitpermontheighteen")),
                tabPanel("Slider Graphics",
                         sliderInput("currentyear",
-                                    "Year", min = 2013, max = 2017, value = 500),
-                        imageOutput("graph")),
+                                    "Year", min = 2013, max = 2017, value = 500, animate = TRUE),
+                        imageOutput("graph"),
+                        imageOutput("graph2")),
                tabPanel("Graphics",
                         plotOutput("thirteengraphone"),
                         plotOutput("thirteengraphtwo"),
                         plotOutput("gtgraph"),
-                        plotOutput("fourteengraphone")),
+                        plotOutput("fourteengraphone")
+                        ),
+               
                tabPanel("Regression",
-                        plotOutput("regressiongraph")),
+                        plotlyOutput("regressiongraph"),
+                        plotOutput("regressiongraph2")
+                        ),
+               
                tabPanel("Regression Coefficient Plot",
                         plotOutput("regressiondata")),
+               
                tabPanel("About",
                         textOutput("Text"))))
     
@@ -57,9 +69,23 @@ server <- function(input, output) {
         if(input$currentyear==2015) year <-"2015graph.png"
         if(input$currentyear==2016) year <-"2016graph.png"
         if(input$currentyear==2017) year <-"2017graph.png"
-        list(src=year)
-    })
+        list(src=year,
+             width = 600,
+             height = 400)
+    },
+       deleteFile = FALSE )
     
+    output$graph2 <- renderImage({
+        if(input$currentyear==2013) year <-"2013graph2.png"
+        if(input$currentyear==2013) year <-"2014graph2.png"
+        if(input$currentyear==2013) year <-"2015graph2.png"
+        if(input$currentyear==2013) year <-"2016graph2.png"
+        if(input$currentyear==2013) year <-"2017graph2.png"
+        list(src=year,
+             width = 600,
+             height = 400)
+    },
+        deleteFile = FALSE )
     output$thirteengraphone <- renderPlot({
     final_gun_violence_data %>%
         filter(year == 2013) %>%
@@ -183,7 +209,23 @@ server <- function(input, output) {
                     columns = vars(state, n),
                     rows = c(14)))
     })
-        output$regressiongraph <- renderPlot({
+        output$regressiongraph <- renderPlotly({
+            ggplotly(
+            permit1 %>%
+                ggplot(aes(x = permit, y = n_incidents, color = state)) +
+                geom_jitter(show.legend = FALSE) +
+                geom_smooth(method = 'lm', se = F, col = 'black') +
+                labs(x = "Number of Gun Violence Incidents", 
+                     y = "Average Permits Granted Per Month",
+                     title = "Impact of Permits Granted on Number of Gun Violence Incidents",
+                     subtitle = "An Analysis of the 50 US States",
+                     caption = "Source: The National Instant Criminal Background Check System and ") +
+                scale_y_log10() +
+                scale_x_log10() 
+            )
+        })
+        
+        output$regressiongraph2 <- renderPlot({
             permit1 %>%
                 ggplot(aes(x = permit, y = n_incidents, color = state)) +
                 geom_jitter(show.legend = FALSE) +
@@ -193,8 +235,9 @@ server <- function(input, output) {
                      title = "Impact of Permits Granted on Number of Gun Violence Incidents",
                      subtitle = "An Analysis of the 50 US States",
                      caption = "Source: The National Instant Criminal Background Check System and ") 
+            
         })
-        
+            
         output$permitpermontheighteen <- renderPlot({
             final_gun_violence_data %>%
                 filter(year == input$chosenyear) %>%
@@ -205,8 +248,8 @@ server <- function(input, output) {
                      title = "The Number of Gun Permits Granted Per Month",
                      subtitle = "Do Gun Permits Sold Increase in Summer Months?",
                      caption = "Source: The National Instant Criminal Background Check System")
-
         })
+    
         
         output$regressiondata <- renderPlot({
             m1 <- lm(n_incidents ~ permit + population, data = permit1)
