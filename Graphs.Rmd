@@ -407,7 +407,23 @@ m1 <- lm(n_incidents ~ permit + population, data = permit1)
 
 summary(m1)
 
+# dividing_incidents_population <- permit1 %>%
+#   mutate(division = (n_incidents/population) * 10000000)
+# 
+# m2 <- lm(division ~ permit, data = dividing_incidents_population)
 
+object <- data.frame(permit = seq(min(permit1$permit), max(permit1$permit), length.out = 100), population = mean(permit1$population))
+
+object$prediction <- predict.lm(m1, object, interval = c("confidence"))
+# worked on above with Georgie - object 'cons' not found --> get it to work then the aesthetic error shows up
+
+summary(m2)
+
+# predicts n_incidents as a function of permit controlling for population
+
+object %>%
+ggplot(aes(x=permit, y=prediction)) +
+  geom_point()
 ```
 
 ```{r}
