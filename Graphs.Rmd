@@ -156,7 +156,8 @@ n_incidentsAAA <- final_gun_violence_data %>%
 
 ```{r}
 n_incidentsAAA
-ggsave("2013gt.png", path ="gun_violence")  
+library(webshot)
+gtsave(n_incidentsAAA, "2013gt.png", path ="gun_violence")  
 ```
 
 
@@ -411,7 +412,7 @@ summary(m1)
 
 ```{r}
 library(coefplot)
-coefplot(m1)
+coefplot(m1, drop(cons))
 ```
 
 

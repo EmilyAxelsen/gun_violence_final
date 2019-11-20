@@ -19,8 +19,8 @@ new_data <- final_gun_violence_data %>%
 
 
 ui <- fluidPage(theme = shinytheme("flatly"),
-    navbarPage("The Impact of Permits On GUn Violnece",
-                tabPanel("*Work In Progress* Graphics",
+    navbarPage("The Impact of Permits On Gun Violence Incidents",
+                tabPanel("Drop Down Graphics",
                          selectInput("chosenyear",
                                      "Select Year:", unique(new_data$year)),
                          plotOutput("permiteighteen"),
@@ -29,7 +29,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                         sliderInput("currentyear",
                                     "Year", min = 2013, max = 2017, value = 500, animate = TRUE),
                         imageOutput("graph"),
-                        imageOutput("graph2")),
+                        imageOutput("graph2"),
+                        imageOutput("graph3")),
                tabPanel("Graphics",
                         plotOutput("thirteengraphone"),
                         plotOutput("thirteengraphtwo"),
@@ -86,6 +87,14 @@ server <- function(input, output) {
              height = 400)
     },
         deleteFile = FALSE )
+    output$graph3 <- renderImage({
+        if(input$currentyear==2013) year <-"2013gt.png"
+        list(src=year,
+             width = 500,
+             height = 800,
+             align = "center")
+    },
+    deleteFile = FALSE )
     output$thirteengraphone <- renderPlot({
     final_gun_violence_data %>%
         filter(year == 2013) %>%
