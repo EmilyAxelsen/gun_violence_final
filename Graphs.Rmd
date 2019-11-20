@@ -395,6 +395,7 @@ permit1 %>%
   ggplot(aes(x = permit, y = n_incidents, color = state)) +
   geom_jitter(show.legend = FALSE) +
   geom_smooth(method = 'lm', se = F, col = 'black') +
+  xlim (?)
     labs(x = "Number of Gun Violence Incidents", 
        y = "Average Permits Granted Per Month",
        title = "Impact of Permits Granted on Number of Gun Violence Incidents",
