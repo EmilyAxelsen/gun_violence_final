@@ -178,6 +178,9 @@ server <- function(input, output) {
 # of the data and just scaled down the x and y axis values. 
     
         output$regressiongraph <- renderPlotly({
+          permit1 <- final_gun_violence_data %>%
+            group_by(year, state, permit, population) %>% 
+            summarise(n_incidents = n()) 
             ggplotly(
             permit1 %>%
                 ggplot(aes(x = permit, y = n_incidents, color = state)) +
@@ -203,6 +206,12 @@ server <- function(input, output) {
 # (for the source of the data) as well as the x and y axis labels. 
         
         output$regressiongraph2 <- renderPlot({
+          
+          permit1 <- final_gun_violence_data %>%
+            group_by(year, state, permit, population) %>% 
+            summarise(n_incidents = n()) 
+          
+          
             permit1 %>%
                 ggplot(aes(x = permit, y = n_incidents, color = state)) +
                 geom_jitter(show.legend = FALSE) +
@@ -211,7 +220,7 @@ server <- function(input, output) {
                      y = "Average Permits Granted Per Month",
                      title = "Impact of Permits Granted on Number of Gun Violence Incidents",
                      subtitle = "An Analysis of the 50 US States",
-                     caption = "Source: The National Instant Criminal Background Check System and ") 
+                     caption = "Source: The National Instant Criminal Background Check System") 
             
         })
         
@@ -238,7 +247,12 @@ server <- function(input, output) {
 # to visualize the regression and is from the library coefplot. 
                 
         output$regressiondata <- renderPlot({
-            m1 <- lm(n_incidents ~ permit + population, data = permit1)
+          permit1 <- final_gun_violence_data %>%
+            group_by(year, state, permit, population) %>% 
+            summarise(n_incidents = n()) 
+          
+          ggplot(
+            m1 <- lm(n_incidents ~ permit + population, data = permit1))
             
             coefplot(m1)
             
