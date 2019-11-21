@@ -324,6 +324,17 @@ server <- function(input, output) {
             gun violence incidents, I located a data source that provides population information for more than 28,000 United States 
             cities and towns. This data was compiled through the use of data from the United States Census Bureau and the United 
             States Geological Survey.
+            
+            
+            In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well as the total 
+            number of gun permits granted per month. The slider graphics tab shows the number of gun permits granted per month then graphs
+            the top ten states that granted the most permits for that month where the most number of permits were granted. For the 2013 tab,
+            I also created a gt table which shows the number of incidents per state in the month that granted the most number of permits in 
+            2013. Next, the regression tab shows a linear regression model of the number of permits granted per month in relation to the number
+            of gun violence incidents. The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is 
+            most concentrated. Users may also hover over each point to see more information about the point. The regression coefficient plot
+            is a visual representation of my linear regression. 
+          
           
             This project was created by Emily Axelsen, a first-year at Harvard College Class of 2023, for Gov 1005: Data Science 
             fall semester 2019."

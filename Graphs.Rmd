@@ -288,7 +288,7 @@ D <- ggplot(permit_2016, aes(x = reorder(state, permit), y = permit, fill = stat
 
 ```{r Printing Graph4}
 D
-ggsave("2014graph2.png", path ="gun_violence")
+ggsave("2016graph2.png", path ="gun_violence")
 ```
 
 ### 2017 Gun Violence Graphics:
