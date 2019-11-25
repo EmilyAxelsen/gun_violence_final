@@ -10,6 +10,7 @@ library(shinythemes)
 library(coefplot)
 library(gt)
 library(plotly)
+library(scales)
 library(tidyverse)
 
 # Reading in rds file with my final data
@@ -265,7 +266,9 @@ server <- function(input, output) {
                      y = "Number of Permits Granted",
                      title = "The Number of Gun Permits Granted Per Month",
                      subtitle = "Do Gun Permits Sold Increase in Summer Months?",
-                     caption = "Source: The National Instant Criminal Background Check System")
+                     caption = "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov
+                                ") +
+            scale_y_continuous(labels = comma)
         })
     
 # I created my regression within a renderPlot and called the result
@@ -302,7 +305,8 @@ server <- function(input, output) {
                 filter(year == input$chosenyear) %>%
                 unique() %>%
                 arrange(desc(permit))  %>%
-                slice(1:10)
+                slice(1:10) 
+            
             
 # I call ggplot in order to create a graph with my permit_2013 data I created in
 # the previous step. I reordered the x and y axises in order to create a graph
@@ -320,7 +324,9 @@ server <- function(input, output) {
                      y = "Number of Permits Granted",
                      title = "The Number of Gun Permits Granted Per State in March",
                      subtitle = "The 10 States With That Granted The Highest Number of Permits",
-                     caption = "Source: The National Instant Criminal Background Check System")
+                     caption = "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov
+                                ") +
+              scale_y_continuous(labels = comma)
         }
         )
 
