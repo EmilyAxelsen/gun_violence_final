@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 library(ggplot2)
 library(gt)
+library(scales)
 library(tidyverse)
 ```
 
@@ -26,10 +27,10 @@ final_gun_violence_data %>%
   labs(x = "Month", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per Month in 2013",
-       subtitle = "Do Gun Permits Sold Increase in Summer Months?",
-       caption = "Source: The National Instant Criminal Background Check System")
+       subtitle = "Do Gun Permits Sold Increase in Summer Months?") +
+  scale_y_continuous(labels = comma)
 
-ggsave("2013graph.png", path ="gun_violence")
+ggsave("2013graphuse.png", path ="gun_violence")
 ```
 
 
@@ -49,13 +50,13 @@ A <- ggplot(permit_2013, aes(x = reorder(state, permit), y = permit, fill = stat
   labs(x = "State", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per State in June, 2013",
-       subtitle = "The 10 States With That Granted The Highest Number of Permits in June, 2013",
-       caption = "Source: The National Instant Criminal Background Check System")
+       subtitle = "The 10 States With That Granted The Highest Number of Permits in June, 2013")+
+  scale_y_continuous(labels = comma)
 ```
 
 ```{r Printing Graph}
 A
-ggsave("2013graph2.png", path ="gun_violence")
+ggsave("2013graph2use.png", path ="gun_violence")
 ```
 
 ```{r}
@@ -157,7 +158,7 @@ n_incidentsAAA <- final_gun_violence_data %>%
 ```{r}
 n_incidentsAAA
 library(webshot)
-gtsave(n_incidentsAAA, "2013gt.png", path ="gun_violence")  
+ggsave(plot = n_incidentsAAA, "test.pdf", device = "pdf") 
 ```
 
 
@@ -183,11 +184,10 @@ final_gun_violence_data %>%
   labs(x = "Month", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per Month in 2014",
-       subtitle = "Do Gun Permits Sold Increase in Summer Months?",
-       caption = "Source: The National Instant Criminal Background Check System")
+       subtitle = "Do Gun Permits Sold Increase in Summer Months?") +
+  scale_y_continuous(labels = comma)
 
-ggsave("2014graph.png", path ="gun_violence")
-#COMMAS
+ggsave("2014graphuse.png", path ="gun_violence")
 ```
 
 
@@ -207,14 +207,14 @@ B <- ggplot(permit_2014, aes(x = reorder(state, permit), y = permit, fill = stat
   labs(x = "State", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per State in March, 2014",
-       subtitle = "The 10 States With That Granted The Highest Number of Permits in March, 2014",
-       caption = "Source: The National Instant Criminal Background Check System")
+       subtitle = "The 10 States With That Granted The Highest Number of Permits in March, 2014") +
+  scale_y_continuous(labels = comma)
 ```
 
 ```{r Printing Graph2}
 B
 
-ggsave("2014graph2.png", path ="gun_violence")
+ggsave("2014graph2use.png", path ="gun_violence")
 ```
 
 
@@ -228,10 +228,10 @@ final_gun_violence_data %>%
   labs(x = "Month", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per Month in 2015",
-       subtitle = "Do Gun Permits Sold Increase in Summer Months?",
-       caption = "Source: The National Instant Criminal Background Check System")
+       subtitle = "Do Gun Permits Sold Increase in Summer Months?") +
+  scale_y_continuous(labels = comma)
 
-ggsave("2015graph.png", path ="gun_violence")
+ggsave("2015graphuse.png", path ="gun_violence")
 ```
 
 
@@ -251,14 +251,14 @@ C <- ggplot(permit_2015, aes(x = reorder(state, permit), y = permit, fill = stat
   labs(x = "State", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per State in December, 2015",
-       subtitle = "The 10 States With That Granted The Highest Number of Permits in December, 2015",
-       caption = "Source: The National Instant Criminal Background Check System")
+       subtitle = "The 10 States With That Granted The Highest Number of Permits in December, 2015") +
+  scale_y_continuous(labels = comma)
 ```
 
 ```{r Printing Graph3}
 C
 
-ggsave("2015graph2.png", path ="gun_violence")
+ggsave("2015graph2use.png", path ="gun_violence")
 ```
 
 ### 2016 Gun Violence Graphics:
@@ -271,9 +271,9 @@ final_gun_violence_data %>%
   labs(x = "Month", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per Month in 2016",
-       subtitle = "Do Gun Permits Sold Increase in Summer Months?",
-       caption = "Source: The National Instant Criminal Background Check System")
-ggsave("2016graph.png", path ="gun_violence")
+       subtitle = "Do Gun Permits Sold Increase in Summer Months?") +
+  scale_y_continuous(labels = comma)
+ggsave("2016graphuse.png", path ="gun_violence")
 ```
 
 
@@ -293,13 +293,13 @@ D <- ggplot(permit_2016, aes(x = reorder(state, permit), y = permit, fill = stat
   labs(x = "State", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per State in March, 2016",
-       subtitle = "The 10 States With That Granted The Highest Number of Permits in March, 2016",
-       caption = "Source: The National Instant Criminal Background Check System")
+       subtitle = "The 10 States With That Granted The Highest Number of Permits in March, 2016") +
+  scale_y_continuous(labels = comma)
 ```
 
 ```{r Printing Graph4}
 D
-ggsave("2016graph2.png", path ="gun_violence")
+ggsave("2016graph2use.png", path ="gun_violence")
 ```
 
 ### 2017 Gun Violence Graphics:
@@ -312,9 +312,9 @@ final_gun_violence_data %>%
   labs(x = "Month", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per Month in 2017",
-       subtitle = "Do Gun Permits Sold Increase in Summer Months?",
-       caption = "Source: The National Instant Criminal Background Check System")
-ggsave("2017graph.png", path ="gun_violence")
+       subtitle = "Do Gun Permits Sold Increase in Summer Months?") +
+  scale_y_continuous(labels = comma)
+ggsave("2017graphuse.png", path ="gun_violence")
 ```
 
 
@@ -334,13 +334,13 @@ E <- ggplot(permit_2017, aes(x = reorder(state, permit), y = permit, fill = stat
   labs(x = "State", 
        y = "Number of Permits Granted",
        title = "The Number of Gun Permits Granted Per State in March, 2017",
-       subtitle = "The 10 States With That Granted The Highest Number of Permits in March, 2017",
-       caption = "Source: The National Instant Criminal Background Check System")
+       subtitle = "The 10 States With That Granted The Highest Number of Permits in March, 2017") +
+  scale_y_continuous(labels = comma)
 ```
 
 ```{r Printing Graph5}
 E
-ggsave("2017graph2.png", path ="gun_violence")
+ggsave("2017graph2use.png", path ="gun_violence")
 ```
 
 ### 2018 Gun Violence Graphics:

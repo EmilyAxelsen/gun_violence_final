@@ -106,11 +106,11 @@ server <- function(input, output) {
 # display the "2013graph.png" image. I repeat this process for my
 # 2014, 2015, 2016, and 2017 graphs. 
         
-        if(input$currentyear==2013) year <-"2013graph.png"
-        if(input$currentyear==2014) year <-"2014graph.png"
-        if(input$currentyear==2015) year <-"2015graph.png"
-        if(input$currentyear==2016) year <-"2016graph.png"
-        if(input$currentyear==2017) year <-"2017graph.png"
+        if(input$currentyear==2013) year <-"2013graphuse.png"
+        if(input$currentyear==2014) year <-"2014graphuse.png"
+        if(input$currentyear==2015) year <-"2015graphuse.png"
+        if(input$currentyear==2016) year <-"2016graphuse.png"
+        if(input$currentyear==2017) year <-"2017graphuse.png"
         
 # Here, I specify the size of my images because when I first put
 # the images in my Shiny they were very large. I played around
@@ -135,11 +135,11 @@ server <- function(input, output) {
 # as equal to my shiny folder. 
     
     output$graph2 <- renderImage({
-        if(input$currentyear==2013) year <-"2013graph2.png"
-        if(input$currentyear==2014) year <-"2014graph2.png"
-        if(input$currentyear==2015) year <-"2015graph2.png"
-        if(input$currentyear==2016) year <-"2016graph2.png"
-        if(input$currentyear==2017) year <-"2017graph2.png"
+        if(input$currentyear==2013) year <-"2013graph2use.png"
+        if(input$currentyear==2014) year <-"2014graph2use.png"
+        if(input$currentyear==2015) year <-"2015graph2use.png"
+        if(input$currentyear==2016) year <-"2016graph2use.png"
+        if(input$currentyear==2017) year <-"2017graph2use.png"
         
 # Once again, I want to specify my width and height so the user 
 # can easily read my graphs.
@@ -157,13 +157,13 @@ server <- function(input, output) {
 # is only for 2013 data, I only call it if the input is 2013. 
     
     output$graph3 <- renderImage({
-        if(input$currentyear==2013) year <-"2013gt.png"
+        if(input$currentyear==2013) year <-"gt.png"
         
 # Here I format to make sure the user can read the gt. 
         
         list(src=year,
-             width = 500,
-             height = 800,
+             width = 800,
+             height = 1000,
              align = "center")
     },
 
@@ -329,6 +329,11 @@ server <- function(input, output) {
               scale_y_continuous(labels = comma)
         }
         )
+        
+        
+        output$Text_drop_down <- renderText({
+          "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov"
+        })
 
 # Here, I define my output$Text as renderText and list the text I want in
 # quotes. Remember that I use output$Text in order to be able to call the 
