@@ -161,6 +161,17 @@ gtsave(n_incidentsAAA, "2013gt.png", path ="gun_violence")
 ```
 
 
+```{r}
+install.packages('usmap')
+library(usmap)
+plot_usmap(data = final_gun_violence_data, values = nrow(final_gun_violence_data), regions = "counties", size = 0.05) +
+  theme(panel.background = element_rect(color = "white", fill = "white")) +
+  scale_fill_continuous(low = "white", high = "blue4", name = "Rel. Prob.") +
+  labs(title = "My Title",
+       subtitle = "My Subtitle")
+```
+
+
 ### 2014 Gun Violence Graphics
 
 

@@ -76,7 +76,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
 # than just plotOutput as for my regressiongraph2. 
                         
                         plotlyOutput("regressiongraph"),
-                        plotOutput("regressiongraph2")),
+                        plotOutput("regressiongraph2"),
+                        plotlyOutput("regressionsssgraph")),
                
 # My Regression Coefficient Plot tab calls the regressiondata output defined
 # in my server. 
@@ -177,24 +178,50 @@ server <- function(input, output) {
 # I chose to scale the x and y axis in order to maintain the validity
 # of the data and just scaled down the x and y axis values. 
     
+    
+# Graph with 95% confidence intervals instead of each data point itself.
+    
         output$regressiongraph <- renderPlotly({
           permit1 <- final_gun_violence_data %>%
             group_by(year, state, permit, population) %>% 
             summarise(n_incidents = n()) 
-            ggplotly(
-            permit1 %>%
-                ggplot(aes(x = permit, y = n_incidents, color = state)) +
-                geom_jitter(show.legend = FALSE) +
-                geom_smooth(method = 'lm', se = F, col = 'black') +
-                labs(x = "Number of Gun Violence Incidents", 
-                     y = "Average Permits Granted Per Month",
-                     title = "Impact of Permits Granted on Number of Gun Violence Incidents",
-                     subtitle = "An Analysis of the 50 US States",
-                     caption = "Source: The National Instant Criminal Background Check System and ") +
+          ggplotly(
+          permit1 %>%
+            ggplot(aes(x = permit, y = n_incidents, color = state)) +
+            geom_jitter(show.legend = FALSE) +
+            geom_smooth(method = 'lm', col = 'black') +
+            scale_x_continuous(limits = c(0, 10)) + 
+            scale_y_continuous(limits = c(0, 10)) +
+            coord_cartesian(xlim=c(0,10), ylim=c(0,10)) + 
+            labs(x = "Number of Gun Violence Incidents", 
+                 y = "Average Permits Granted Per Month",
+                 title = "Impact of Permits Granted on Number of Gun Violence Incidents",
+                 subtitle = "An Analysis of the 50 US States",
+                 caption = "Source: The National Instant Criminal Background Check System and " +
                 scale_y_log10() +
                 scale_x_log10() 
-            )
+            ))
             
+        })
+        
+        
+        output$regressionsssgraph <- renderPlotly({
+          permit2 <- final_gun_violence_data %>%
+            group_by(year, state, permit, population) %>% 
+            summarise(n_incidents = n()) 
+          ggplotly(
+          permit2 %>%
+            ggplot(aes(x = permit, y = n_incidents, color = state)) +
+            geom_jitter(show.legend = FALSE) +
+            geom_smooth(method = 'lm', col = 'black') + 
+            labs(x = "Number of Gun Violence Incidents", 
+                 y = "Average Permits Granted Per Month",
+                 title = "Impact of Permits Granted on Number of Gun Violence Incidents",
+                 subtitle = "An Analysis of the 50 US States",
+                 caption = "Source: The National Instant Criminal Background Check System and ") +
+            scale_y_log10() +
+            scale_x_log10() 
+          )
         })
         
 # This plot is a graph of my regression. I made sure to call renderPlot
