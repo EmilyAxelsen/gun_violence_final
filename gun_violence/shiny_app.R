@@ -209,10 +209,14 @@ server <- function(input, output) {
         output$regressionsssgraph <- renderPlotly({
           permit2 <- final_gun_violence_data %>%
             group_by(year, state, permit, population) %>% 
-            summarise(n_incidents = n()) 
+            summarise(n_incidents = n()) %>%
+            mutate(region = ifelse(state %in% c("Wisconsin", "Michigan", "Ohio", "Indiana", "Illinois", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota", "midwest",
+                            ifelse(state %in% c("Delaware", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "Virginia", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas", "south",
+                            ifelse(state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont", "New Jersey", "New York", "Pennslyvania", "northeast",
+                            ifelse(state %in% c("Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington", "west", "none")))))))))
           ggplotly(
           permit2 %>%
-            ggplot(aes(x = permit, y = n_incidents, color = state)) +
+            ggplot(aes(x = permit, y = n_incidents, color = region)) +
             geom_jitter(show.legend = FALSE) +
             geom_smooth(method = 'lm', col = 'black') + 
             labs(x = "Number of Gun Violence Incidents", 
@@ -222,7 +226,7 @@ server <- function(input, output) {
                  caption = "Source: The National Instant Criminal Background Check System and ") +
             scale_y_log10() +
             scale_x_log10() 
-          )
+          ) 
         })
         
 # This plot is a graph of my regression. I made sure to call renderPlot
