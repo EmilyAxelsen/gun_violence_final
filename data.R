@@ -104,6 +104,8 @@ saveRDS(new_state, "state_policy.rds")
 
 data_gun_violence <- left_join(final_data, new_state, by = c("state", "year"))
 
+saveRDS(data_gun_violence, "policy_and_checks.rds")
+
 unique(new_state$state)
 unique(final_data$state)
 

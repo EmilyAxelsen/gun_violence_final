@@ -15,7 +15,11 @@ library(tidyverse)
 
 # Reading in rds file with my final data
 
-final_gun_violence_data <- read_rds("final_data.rds")
+final_gun_violence_data <- read_rds("final data copy/final_data.rds")
+
+state_policy <- read_rds("final data copy/state_policy.rds")
+
+policy_and_checks <- read_rds("final data copy/policy_and_checks.rds")
 
 # After I had already read in my rds file with my final data, I decided that I
 # didn't want to include the data for 2018 because I only have data for the
@@ -85,6 +89,13 @@ ui <- fluidPage(theme = shinytheme("flatly"),
 
                tabPanel("Regression Coefficient Plot",
                         plotOutput("regressiondata")),
+
+               tabPanel("State Policy Correlation",
+                        
+                        selectInput("chosenyear",
+                                    "Select Year:", unique(new_data$year)),  
+                        plotOutput("statepolicy1"),
+                        plotOutput("statepolicy2")),
 
 # Finally, I created my About tab and used the textOutput function to define
 # the text that I want on my About page. 
@@ -227,6 +238,35 @@ server <- function(input, output) {
             scale_y_log10() +
             scale_x_log10() 
           ) 
+        })
+        
+        
+        output$statepolicy1 <- renderPlot({
+          incidents_regis_requir <- policy_and_checks %>%
+            filter(year == input$chosenyear) %>%
+            filter(w_guncontrol_registration_requir == "TRUE") %>%
+            group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
+            summarise(n_incidents = n()) 
+        
+          ggplot(incidents_regis_requir, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents", title = "Incidents in States With Required Gun Registration",
+                 subtitle = "Do the number of gun violence incidents decrease when gun registration is required?")
+        })
+        
+        output$statepolicy2 <- renderPlot({
+          incidents_regis_requir2 <- policy_and_checks %>%
+            filter(year == input$chosenyear) %>%
+            filter(w_guncontrol_registration_requir == "FALSE") %>%
+            group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
+            summarise(n_incidents = n()) 
+      
+          ggplot(incidents_regis_requir2, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents", title = "Incidents in States Where Gun Registration Is Not Required",
+                 subtitle = "Do the number of gun violence incidents decrease when gun registration is required?")
         })
         
 # This plot is a graph of my regression. I made sure to call renderPlot
