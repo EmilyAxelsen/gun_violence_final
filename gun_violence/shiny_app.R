@@ -31,7 +31,8 @@ new_data <- final_gun_violence_data %>%
     filter(year != 2018) %>%
     mutate(year = fct_relevel(year, "2013", "2014", "2015", "2016", "2017"))
 
-
+new_data2 <- final_gun_violence_data %>%
+  filter(year %in% c(2013, 2014))
 
 # Here, I'm defining my ui. First, I use the fluidPage function to define my
 # shinytheme as "flatly." I also add the navbarPage function to add a title
@@ -70,8 +71,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
 # the server as graph, graph2, and graph 3.
 
                         imageOutput("graph"),
-                        imageOutput("graph2"),
-                        imageOutput("graph3")),
+                        imageOutput("graph2")),
+                        #imageOutput("graph3")),
 
 # Next, I'm making my Regression tab.
 
@@ -92,8 +93,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
 
                tabPanel("State Policy Correlation",
                         
-                        selectInput("chosenyear",
-                                    "Select Year:", unique(new_data$year)),  
+                        selectInput("year",
+                                    "Select Year:", unique(new_data2$year)),  
                         plotOutput("statepolicy1"),
                         plotOutput("statepolicy2")),
 
@@ -197,7 +198,7 @@ server <- function(input, output) {
           permit1 <- final_gun_violence_data %>%
             group_by(year, state, permit, population) %>% 
             summarise(n_incidents = n()) 
-          ggplotly(
+          hide_legend(ggplotly(
           permit1 %>%
             ggplot(aes(x = permit, y = n_incidents, color = state)) +
             geom_jitter(show.legend = FALSE) +
@@ -212,7 +213,7 @@ server <- function(input, output) {
                  caption = "Source: The National Instant Criminal Background Check System and " +
                 scale_y_log10() +
                 scale_x_log10() 
-            ))
+            )))
             
         })
         
@@ -221,29 +222,31 @@ server <- function(input, output) {
           permit2 <- final_gun_violence_data %>%
             group_by(year, state, permit, population) %>% 
             summarise(n_incidents = n()) %>%
-            mutate(region = ifelse(state %in% c("Wisconsin", "Michigan", "Ohio", "Indiana", "Illinois", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota", "midwest",
-                            ifelse(state %in% c("Delaware", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "Virginia", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas", "south",
-                            ifelse(state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont", "New Jersey", "New York", "Pennslyvania", "northeast",
-                            ifelse(state %in% c("Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington", "west", "none")))))))))
-          ggplotly(
+            mutate(region = ifelse(state %in% c("Wisconsin", "Michigan", "Ohio", "Indiana", "Illinois", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota"), "midwest",
+                            ifelse(state %in% c("Delaware", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "Virginia", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas"), "south",
+                            ifelse(state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont", "New Jersey", "New York", "Pennslyvania"), "northeast",
+                            ifelse(state %in% c("Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington"), "west", "none")))))
+         hide_legend(ggplotly(
           permit2 %>%
             ggplot(aes(x = permit, y = n_incidents, color = region)) +
             geom_jitter(show.legend = FALSE) +
             geom_smooth(method = 'lm', col = 'black') + 
-            labs(x = "Number of Gun Violence Incidents", 
-                 y = "Average Permits Granted Per Month",
+            labs(x = "Average Permits Granted Per Month", 
+                 y = "Number of Gun Violence Incidents",
                  title = "Impact of Permits Granted on Number of Gun Violence Incidents",
                  subtitle = "An Analysis of the 50 US States",
                  caption = "Source: The National Instant Criminal Background Check System and ") +
             scale_y_log10() +
-            scale_x_log10() 
-          ) 
+            scale_x_log10() )) %>%
+           style(hoverinfo = "text",
+                 hovertext = paste("Region:", permit2$region))
+          
         })
         
         
         output$statepolicy1 <- renderPlot({
           incidents_regis_requir <- policy_and_checks %>%
-            filter(year == input$chosenyear) %>%
+            filter(year == input$year) %>%
             filter(w_guncontrol_registration_requir == "TRUE") %>%
             group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
             summarise(n_incidents = n()) 
@@ -257,7 +260,7 @@ server <- function(input, output) {
         
         output$statepolicy2 <- renderPlot({
           incidents_regis_requir2 <- policy_and_checks %>%
-            filter(year == input$chosenyear) %>%
+            filter(year == input$year) %>%
             filter(w_guncontrol_registration_requir == "FALSE") %>%
             group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
             summarise(n_incidents = n()) 
