@@ -45,19 +45,37 @@ ui <- fluidPage(theme = shinytheme("flatly"),
 # I defined in the server for the "chosenyear" variable. I ask the user to select 
 # the year and use the unique function to get a year from my dataset. 
                
-                tabPanel("Drop Down Graphics",
+                tabPanel("2013-2017 Gun Violence in March",
+                         
+                         
+                         
+                         
                          selectInput("chosenyear",
                                      "Select Year:", unique(new_data$year)),
                          
 # I then use plotOuput to print my graph called "permiteighteen" as well as 
 # my plot called "permitpermontheighteen."
-
-                         plotOutput("permiteighteen"),
-                         plotOutput("permitpermontheighteen")),
+br(),
+h3("How do the number of gun permits vary by month each year 2013-2017?"),
+h4("Do the number of gun permits sold increase in the summer months?"),
+br(),
+                         
+                         plotOutput("permitpermontheighteen"),
+br(),
+h3("The highest number of permits granted in 2014, 2016, and 2017 were in the month of March."),
+h4("In March of each year 2013-2017, which 10 states granted the most permits?"),
+br(),
+                         plotOutput("permiteighteen")),
+                         
 
 # Next, I define my next tabPanel as "Slider Graphics."
 
-               tabPanel("Slider Graphics",
+               tabPanel("More Permits = More Gun Violence?",
+                        br(),
+                        h3("Which month granted the most permits per year 2013-2017?"),
+                        h4("In the month that granted the most permits, what were the ten states that granted the most permits."),
+                        br(),
+                        
                         
 # My slider input defines the values I want on my slider, in this case values 
 # 2013-2017 to represent the years I have data for. I set animate equal to TRUE 
@@ -69,14 +87,15 @@ ui <- fluidPage(theme = shinytheme("flatly"),
 
 # I use the imageOutput function in order to call the graphs that I define in 
 # the server as graph, graph2, and graph 3.
-
-                        imageOutput("graph"),
-                        imageOutput("graph2")),
+                        
+                        imageOutput("graph2"),
+                        imageOutput("graph")),
+                        
                         #imageOutput("graph3")),
 
 # Next, I'm making my Regression tab.
 
-               tabPanel("Regression",
+               tabPanel("Visualizing Linear Regressions",
                         
 # I used plotly on my regressiongraph so I had to call plotlyOutput rather
 # than just plotOutput as for my regressiongraph2. 
@@ -92,6 +111,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                         plotOutput("regressiondata")),
 
                tabPanel("State Policy Correlation",
+                        h3("Do state-wide gun registration requirements lead to less gun violence incidents?"),
+                        br(),
                         
                         selectInput("year",
                                     "Select Year:", unique(new_data2$year)),  
@@ -102,7 +123,27 @@ ui <- fluidPage(theme = shinytheme("flatly"),
 # the text that I want on my About page. 
                
                tabPanel("About",
-                        textOutput("Text"))))
+                        mainPanel(
+                          h2("Data Sources"),
+                          h5("The plots are created using data from ", a("The National Instant Criminal Background Check System (NICS)", href="https://www.fbi.gov/services/cjis/nics"), " , provided by the Federal Bureau of Investigation. Background checks are strong indicators of the number of firearms sold."),
+                          h5("Population data was also gathered from ", a("The United States Census Bureau", href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-state-total.html"), ", which gathers population data from the 2010s."),
+                          h5("In order to find the number of gun violence incidents, I used a ", a("Gun Violence data set", href="https://www.kaggle.com/jameslko/gun-violence-data", " data set")),
+                          h5("The Gun Violence dataset uses data from  which compiled data from ", a("the Gun Violence Archive", href="https://www.gunviolencearchive.org", " an organization dedicated to providing real-time gun violence data"),
+                          h5("Finally, I also used a dataset created by the Institute for Public Policy and Social Research called ", a("Correlates of State Policy", href="http://ippsr.msu.edu/public-policy/correlates-state-policy", ", which includes state policy data related to gun violence, such as states that require gun registration."),
+                          h5("Citation"),
+                          h6("Jordan, Marty P. and Matt Grossmann. 2017. The Correlates of State Policy Project v.2.1. East Lansing, MI: Institute for Public Policy and Social Research (IPPSR)."),
+                          h2("About Me"),
+                          h5("Hi! My name is Emily Axelsen and I am first-year student at Harvard College studying History and passionate about data science and R."),
+                          h5("This project was created for a course called Gov 1005: Data Science fall semester 2019."),
+                          h5("Contact me at emilyaxelsen@college.harvard.edu."),
+                          h2("Detailed Explanation of Data & Sources"),
+                          h5("Just as the effects of gun violence are wide-reaching, impacting individuals as well as community sentiment, there is no single cause of gun violence in the United States. Therefore, I am interested in analyzing how gun violence correlates to economic injustice and the impact of community-based programs."),
+                          h5("Does data show that communities with gun violence programs actually experience a decrease in gun violence? By evaluating the statistically significant rates of gun violence compared to the population, I located the cities on which to focus my analysis. The Federal Bureau of Investigation’s National Instant Criminal Background Check System (NICS) provides data on how many background checks were conducted in the United States. This data is converted from PDF to CSV by Buzzfeed News and is significant as firearm background checks often have a close correlation to gun sales and therefore are a good indication of a state’s gun sales. Through my data analysis, I plan to explore whether there is a connection between increased gun sales and more gun violence."),
+                          h5("To determine public policies related to guns, I made use of a dataset that compiles information about different state’s public policies. Students and scholars through Michigan State University’s Institute for Public Policy and Social Research worked to organize and make policy data publicly available. Through The Trace, a resource that publishes information related to gun violence, I acquired a data source that provides information on the state, date, number killed, number injured, and age group for over 230,000 incidents involving gun violence. This gun violence datasource is from an organization called Gun Violence Archive which finds data by combing through local and state police and other government sources that report gun violence and crime."),
+                          h5("To compare the number of background checks conducted, the number of public policies compared to population size, and gun violence incidents, I located a data source that provides population information for more than 28,000 United States cities and towns. This data was compiled through the use of data from the United States Census Bureau and the United States Geological Survey."),
+                          h2("Site Navigation"),
+                          h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits granted per month then graphs the top ten states that granted the most permits for that month where the most number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear regression model of the number of permits granted per month in relation to the number of gun violence incidents. The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most concentrated. Users may also hover over each point to see more information about the point. The regression coefficient plot is a visual representation of my linear regression.")
+                        ))))))
   
 
   
@@ -222,10 +263,10 @@ server <- function(input, output) {
           permit2 <- final_gun_violence_data %>%
             group_by(year, state, permit, population) %>% 
             summarise(n_incidents = n()) %>%
-            mutate(region = ifelse(state %in% c("Wisconsin", "Michigan", "Ohio", "Indiana", "Illinois", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota"), "midwest",
-                            ifelse(state %in% c("Delaware", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "Virginia", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas"), "south",
-                            ifelse(state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont", "New Jersey", "New York", "Pennslyvania"), "northeast",
-                            ifelse(state %in% c("Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington"), "west", "none")))))
+            mutate(region = ifelse(state %in% c("Wisconsin", "Michigan", "Ohio", "Indiana", "Illinois", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota"), "Midwest",
+                            ifelse(state %in% c("Delaware", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "Virginia", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas"), "South",
+                            ifelse(state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont", "New Jersey", "New York", "Pennslyvania"), "Northeast",
+                            ifelse(state %in% c("Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington"), "West", "None")))))
          hide_legend(ggplotly(
           permit2 %>%
             ggplot(aes(x = permit, y = n_incidents, color = region)) +
@@ -254,8 +295,9 @@ server <- function(input, output) {
           ggplot(incidents_regis_requir, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
             geom_col(show.legend = FALSE) +
             coord_flip() +
-            labs(x = "State", y = "Number of Incidents", title = "Incidents in States With Required Gun Registration",
-                 subtitle = "Do the number of gun violence incidents decrease when gun registration is required?")
+            labs(x = "State", y = "Number of Incidents")
+                 #title = "Incidents in States With Required Gun Registration",
+                 #subtitle = "Do the number of gun violence incidents decrease when gun registration is required?")
         })
         
         output$statepolicy2 <- renderPlot({
@@ -268,8 +310,9 @@ server <- function(input, output) {
           ggplot(incidents_regis_requir2, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
             geom_col(show.legend = FALSE) +
             coord_flip() +
-            labs(x = "State", y = "Number of Incidents", title = "Incidents in States Where Gun Registration Is Not Required",
-                 subtitle = "Do the number of gun violence incidents decrease when gun registration is required?")
+            labs(x = "State", y = "Number of Incidents")
+                 #title = "Incidents in States Where Gun Registration Is Not Required",
+                 #subtitle = "Do the number of gun violence incidents decrease when gun registration is required?")
         })
         
 # This plot is a graph of my regression. I made sure to call renderPlot
@@ -310,11 +353,11 @@ server <- function(input, output) {
                 ggplot(aes(x = month, y = permit, fill = month)) + 
                 geom_bar(stat = 'identity', show.legend = FALSE) +
                 labs(x = "Month", 
-                     y = "Number of Permits Granted",
-                     title = "The Number of Gun Permits Granted Per Month",
-                     subtitle = "Do Gun Permits Sold Increase in Summer Months?",
-                     caption = "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov
-                                ") +
+                     y = "Number of Permits Granted"
+                #      title = "The Number of Gun Permits Granted Per Month",
+                #      subtitle = "Do Gun Permits Sold Increase in Summer Months?",
+                #      caption = "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov
+                                ) +
             scale_y_continuous(labels = comma)
         })
     
@@ -368,11 +411,11 @@ server <- function(input, output) {
                 geom_col(show.legend = FALSE) +
                 coord_flip() +
                 labs(x = "State", 
-                     y = "Number of Permits Granted",
-                     title = "The Number of Gun Permits Granted Per State in March",
-                     subtitle = "The 10 States With That Granted The Highest Number of Permits",
-                     caption = "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov
-                                ") +
+                     y = "Number of Permits Granted"
+                      #title = "The Number of Gun Permits Granted Per State in March",
+                      #subtitle = "The 10 States With That Granted The Highest Number of Permits",
+                     #caption = "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov"
+                             ) +
               scale_y_continuous(labels = comma)
         }
         )
@@ -386,44 +429,7 @@ server <- function(input, output) {
 # quotes. Remember that I use output$Text in order to be able to call the 
 # output in my ui. 
         
-        output$Text <- renderText({
-            "Just as the effects of gun violence are wide-reaching, impacting individuals as well as 
-            community sentiment, there is no single cause of gun violence in the United States. Therefore, 
-            I am interested in analyzing how gun violence correlates to economic injustice and the impact of 
-            community-based programs. Does data show that communities with gun violence programs actually experience 
-            a decrease in gun violence? By evaluating the statistically significant rates of gun violence compared to 
-            the population, I located the cities on which to focus my analysis.
-            The Federal Bureau of Investigation’s National Instant Criminal Background Check System (NICS) 
-            provides data on how many background checks were conducted in the United States. This data is converted 
-            from PDF to CSV by Buzzfeed News and is significant as firearm background checks often have a close correlation 
-            to gun sales and therefore are a good indication of a state’s gun sales. Through my data analysis, I plan to 
-            explore whether there is a connection between increased gun sales and more gun violence. 
-            To determine public policies related to guns, I made use of a dataset that compiles information about different 
-            state’s public policies. Students and scholars through Michigan State University’s Institute for Public Policy 
-            and Social Research worked to organize and make policy data publicly available. 
-            Through The Trace, a resource that publishes information related to gun violence, I acquired a data source that 
-            provides information on the state, date, number killed, number injured, and age group for over 230,000 incidents 
-            involving gun violence. This gun violence datasource is from an organization called Gun Violence Archive which 
-            finds data by combing through local and state police and other government sources that report gun violence and crime. 
-            To compare the number of background checks conducted, the number of public policies compared to population size, and 
-            gun violence incidents, I located a data source that provides population information for more than 28,000 United States 
-            cities and towns. This data was compiled through the use of data from the United States Census Bureau and the United 
-            States Geological Survey.
-            
-            
-            In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well as the total 
-            number of gun permits granted per month. The slider graphics tab shows the number of gun permits granted per month then graphs
-            the top ten states that granted the most permits for that month where the most number of permits were granted. For the 2013 tab,
-            I also created a gt table which shows the number of incidents per state in the month that granted the most number of permits in 
-            2013. Next, the regression tab shows a linear regression model of the number of permits granted per month in relation to the number
-            of gun violence incidents. The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is 
-            most concentrated. Users may also hover over each point to see more information about the point. The regression coefficient plot
-            is a visual representation of my linear regression. 
-          
-          
-            This project was created by Emily Axelsen, a first-year at Harvard College Class of 2023, for Gov 1005: Data Science 
-            fall semester 2019."
-        })
+        
     }
     
 
