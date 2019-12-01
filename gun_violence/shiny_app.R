@@ -41,12 +41,6 @@ new_data2 <- final_gun_violence_data %>%
 ui <- fluidPage(theme = shinytheme("flatly"),
     navbarPage("Tracing Factors Correlated to Gun Violence",
                
-               tabPanel("Why Permits?",
-                        h5("Why is it important to analyze the number of gun permits granted?"),
-                        h4("")
-                        
-                        )
-               
 # I'm adding my tabPanel called "Drop Down Graphics" and calling the selectInput
 # I defined in the server for the "chosenyear" variable. I ask the user to select 
 # the year and use the unique function to get a year from my dataset. 
@@ -155,8 +149,15 @@ br(),
                           h5("To determine public policies related to guns, I made use of a dataset that compiles information about different state’s public policies. Students and scholars through Michigan State University’s Institute for Public Policy and Social Research worked to organize and make policy data publicly available. Through The Trace, a resource that publishes information related to gun violence, I acquired a data source that provides information on the state, date, number killed, number injured, and age group for over 230,000 incidents involving gun violence. This gun violence datasource is from an organization called Gun Violence Archive which finds data by combing through local and state police and other government sources that report gun violence and crime."),
                           h5("To compare the number of background checks conducted, the number of public policies compared to population size, and gun violence incidents, I located a data source that provides population information for more than 28,000 United States cities and towns. This data was compiled through the use of data from the United States Census Bureau and the United States Geological Survey."),
                           h2("Site Navigation"),
-                          h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits granted per month then graphs the top ten states that granted the most permits for that month where the most number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear regression model of the number of permits granted per month in relation to the number of gun violence incidents. The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most concentrated. Users may also hover over each point to see more information about the point. The regression coefficient plot is a visual representation of my linear regression.")
-                        ))))
+                          h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits granted per month then graphs the top ten states that granted the most permits for that month where the most number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear regression model of the number of permits granted per month in relation to the number of gun violence incidents. The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most concentrated. Users may also hover over each point to see more information about the point. The regression coefficient plot is a visual representation of my linear regression."),
+                          h2("Why is it important to analyze the number of gun permits granted?"),
+                          h5("On November 25, 2019, USA Today published an article that detailed the sudden increase in 
+                           background checks as a result of protests for stricter gun laws following gun violence incidents."),
+                          h5("Therefore, an increase in background checks is often spurred by a fear of more restrictive gun laws."),
+                          h6("To read more about the increase in gun violence permits, please see the ", a("USA Today Article.", href="https://www.usatoday.com/story/news/politics/2019/11/25/fbi-background-checks-rise-amid-mass-shootings-calls-gun-control/4228725002/ ")
+                          ),
+                          
+                          ))))
   
 
   
