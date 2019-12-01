@@ -41,6 +41,12 @@ new_data2 <- final_gun_violence_data %>%
 ui <- fluidPage(theme = shinytheme("flatly"),
     navbarPage("Tracing Factors Correlated to Gun Violence",
                
+               tabPanel("Why Permits?",
+                        h5("Why is it important to analyze the number of gun permits granted?"),
+                        h4("")
+                        
+                        )
+               
 # I'm adding my tabPanel called "Drop Down Graphics" and calling the selectInput
 # I defined in the server for the "chosenyear" variable. I ask the user to select 
 # the year and use the unique function to get a year from my dataset. 
@@ -88,9 +94,9 @@ br(),
 # I use the imageOutput function in order to call the graphs that I define in 
 # the server as graph, graph2, and graph 3.
                         
+                        imageOutput("graph"),
                         imageOutput("graph2"),
-                        imageOutput("graph")),
-                        
+                        h5("In 2014, 2016, and 2017, the highest number of permits were granted in March. Therefore, the number of guns would increase going into the summer months which therefore leads to increased violence according to the data.")),
                         #imageOutput("graph3")),
 
 # Next, I'm making my Regression tab.
@@ -100,9 +106,13 @@ br(),
 # I used plotly on my regressiongraph so I had to call plotlyOutput rather
 # than just plotOutput as for my regressiongraph2. 
                         
-                        plotlyOutput("regressiongraph"),
+                        h4("The impact of gun permits granted on the number of gun violence incidents:"),
                         plotOutput("regressiongraph2"),
-                        plotlyOutput("regressionsssgraph")),
+                        h5("All data points are shown in the graph above."),
+                        plotlyOutput("regressionsssgraph"),
+                        h5("The x-axis is scaled by log in order to better see the points."),
+                        plotlyOutput("regressiongraph")),
+                        #h5("")
                
 # My Regression Coefficient Plot tab calls the regressiondata output defined
 # in my server. 
@@ -116,8 +126,11 @@ br(),
                         
                         selectInput("year",
                                     "Select Year:", unique(new_data2$year)),  
+                        h4("States that required gun registration:"),
                         plotOutput("statepolicy1"),
-                        plotOutput("statepolicy2")),
+                        h4("States that did not require gun registration:"),
+                        plotOutput("statepolicy2"),
+                        h5("States that required gun registration in 2013 and 2014 did not see a significant decrease in the number of gun violence incidents.")),
 
 # Finally, I created my About tab and used the textOutput function to define
 # the text that I want on my About page. 
@@ -125,12 +138,12 @@ br(),
                tabPanel("About",
                         mainPanel(
                           h2("Data Sources"),
-                          h5("The plots are created using data from ", a("The National Instant Criminal Background Check System (NICS)", href="https://www.fbi.gov/services/cjis/nics"), " , provided by the Federal Bureau of Investigation. Background checks are strong indicators of the number of firearms sold."),
+                          h5("The plots are created using data from ", a("The National Instant Criminal Background Check System (NICS)", href="https://www.fbi.gov/services/cjis/nics"), ", provided by the Federal Bureau of Investigation. Background checks are strong indicators of the number of firearms sold."),
                           h5("Population data was also gathered from ", a("The United States Census Bureau", href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-state-total.html"), ", which gathers population data from the 2010s."),
-                          h5("In order to find the number of gun violence incidents, I used a ", a("Gun Violence data set", href="https://www.kaggle.com/jameslko/gun-violence-data", " data set")),
-                          h5("The Gun Violence dataset uses data from  which compiled data from ", a("the Gun Violence Archive", href="https://www.gunviolencearchive.org", " an organization dedicated to providing real-time gun violence data"),
-                          h5("Finally, I also used a dataset created by the Institute for Public Policy and Social Research called ", a("Correlates of State Policy", href="http://ippsr.msu.edu/public-policy/correlates-state-policy", ", which includes state policy data related to gun violence, such as states that require gun registration."),
-                          h5("Citation"),
+                          h5("In order to find the number of gun violence incidents, I used a ", a("Gun Violence", href="https://www.kaggle.com/jameslko/gun-violence-data"), " data set"),
+                          h5("The Gun Violence dataset uses data from  which compiled data from ", a("the Gun Violence Archive", href="https://www.gunviolencearchive.org"), " an organization dedicated to providing real-time gun violence data"),
+                          h5("Finally, I also used a dataset created by the Institute for Public Policy and Social Research called ", a("Correlates of State Policy", href="http://ippsr.msu.edu/public-policy/correlates-state-policy"), ", which includes state policy data related to gun violence, such as states that require gun registration."),
+                          h5("Citation for State Policy Dataset"),
                           h6("Jordan, Marty P. and Matt Grossmann. 2017. The Correlates of State Policy Project v.2.1. East Lansing, MI: Institute for Public Policy and Social Research (IPPSR)."),
                           h2("About Me"),
                           h5("Hi! My name is Emily Axelsen and I am first-year student at Harvard College studying History and passionate about data science and R."),
@@ -143,7 +156,7 @@ br(),
                           h5("To compare the number of background checks conducted, the number of public policies compared to population size, and gun violence incidents, I located a data source that provides population information for more than 28,000 United States cities and towns. This data was compiled through the use of data from the United States Census Bureau and the United States Geological Survey."),
                           h2("Site Navigation"),
                           h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits granted per month then graphs the top ten states that granted the most permits for that month where the most number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear regression model of the number of permits granted per month in relation to the number of gun violence incidents. The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most concentrated. Users may also hover over each point to see more information about the point. The regression coefficient plot is a visual representation of my linear regression.")
-                        ))))))
+                        ))))
   
 
   
@@ -273,10 +286,7 @@ server <- function(input, output) {
             geom_jitter(show.legend = FALSE) +
             geom_smooth(method = 'lm', col = 'black') + 
             labs(x = "Average Permits Granted Per Month", 
-                 y = "Number of Gun Violence Incidents",
-                 title = "Impact of Permits Granted on Number of Gun Violence Incidents",
-                 subtitle = "An Analysis of the 50 US States",
-                 caption = "Source: The National Instant Criminal Background Check System and ") +
+                 y = "Number of Gun Violence Incidents") +
             scale_y_log10() +
             scale_x_log10() )) %>%
            style(hoverinfo = "text",
@@ -335,10 +345,7 @@ server <- function(input, output) {
                 geom_jitter(show.legend = FALSE) +
                 geom_smooth(method = 'lm', se = F, col = 'black') +
                 labs(x = "Number of Gun Violence Incidents", 
-                     y = "Average Permits Granted Per Month",
-                     title = "Impact of Permits Granted on Number of Gun Violence Incidents",
-                     subtitle = "An Analysis of the 50 US States",
-                     caption = "Source: The National Instant Criminal Background Check System") 
+                     y = "Average Permits Granted Per Month") 
             
         })
         
