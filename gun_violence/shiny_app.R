@@ -31,6 +31,10 @@ new_data <- final_gun_violence_data %>%
     filter(year != 2018) %>%
     mutate(year = fct_relevel(year, "2013", "2014", "2015", "2016", "2017"))
 
+# I also filtered by final data for 2013 and 2014 for my state policy graphs 
+# as the state policy dataset only includes which states required gun 
+# registration in 2013 and 2014. 
+
 new_data2 <- final_gun_violence_data %>%
   filter(year %in% c(2013, 2014))
 
@@ -39,28 +43,34 @@ new_data2 <- final_gun_violence_data %>%
 # to my shiny app.
 
 ui <- fluidPage(theme = shinytheme("flatly"),
-    navbarPage("Tracing Factors Correlated to Gun Violence",
+                
+    navbarPage("More Permits More Problems?: Tracing Factors Correlated to Gun Violence",
                
-# I'm adding my tabPanel called "Drop Down Graphics" and calling the selectInput
-# I defined in the server for the "chosenyear" variable. I ask the user to select 
-# the year and use the unique function to get a year from my dataset. 
+# I'm adding my tabPanel called "2013-2017 Gun Violence in March" and calling the 
+# selectInput I defined in the server for the "chosenyear" variable. I ask the 
+# user to select the year and use the unique function to get a year from my dataset. 
                
                 tabPanel("2013-2017 Gun Violence in March",
-                         
-                         
-                         
-                         
+                    
                          selectInput("chosenyear",
                                      "Select Year:", unique(new_data$year)),
-                         
-# I then use plotOuput to print my graph called "permiteighteen" as well as 
-# my plot called "permitpermontheighteen."
+
+# I added br() to put in a page break. 
+# h3 and h4 define the font size for my text in quotes. Remember that as the number
+# gets smaller, the text gets larger. 
+
 br(),
 h3("How do the number of gun permits vary by month each year 2013-2017?"),
 h4("Do the number of gun permits sold increase in the summer months?"),
 br(),
-                         
+
+# I then use plotOuput to print my graph called "permiteighteen" as well as 
+# my plot called "permitpermontheighteen."
+         
                          plotOutput("permitpermontheighteen"),
+
+# Adding more page breaks and text to emphasize important information.
+
 br(),
 h3("The highest number of permits granted in 2014, 2016, and 2017 were in the month of March."),
 h4("In March of each year 2013-2017, which 10 states granted the most permits?"),
@@ -91,7 +101,10 @@ br(),
                         imageOutput("graph"),
                         imageOutput("graph2"),
                         h5("In 2014, 2016, and 2017, the highest number of permits were granted in March. Therefore, the number of guns would increase going into the summer months which therefore leads to increased violence according to the data.")),
-                        #imageOutput("graph3")),
+          
+      
+              tabPanel("Additional Data Visualizations for 2013",
+                        imageOutput("graph3")),
 
 # Next, I'm making my Regression tab.
 
@@ -105,8 +118,8 @@ br(),
                         h5("All data points are shown in the graph above."),
                         plotlyOutput("regressionsssgraph"),
                         h5("The x-axis is scaled by log in order to better see the points."),
+                        h5("Notice that for a fixed number of permits, the South has more gun violence incidents than average as most of the data points for the South are above the line of best fit."),
                         plotlyOutput("regressiongraph")),
-                        #h5("")
                
 # My Regression Coefficient Plot tab calls the regressiondata output defined
 # in my server. 
@@ -280,8 +293,8 @@ server <- function(input, output) {
             mutate(region = ifelse(state %in% c("Wisconsin", "Michigan", "Ohio", "Indiana", "Illinois", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota"), "Midwest",
                             ifelse(state %in% c("Delaware", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "Virginia", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas"), "South",
                             ifelse(state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont", "New Jersey", "New York", "Pennslyvania"), "Northeast",
-                            ifelse(state %in% c("Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington"), "West", "None")))))
-         hide_legend(ggplotly(
+                            ifelse(state %in% c("Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington"), "West", "District of Columbia")))))
+         ggplotly(
           permit2 %>%
             ggplot(aes(x = permit, y = n_incidents, color = region)) +
             geom_jitter(show.legend = FALSE) +
@@ -289,7 +302,7 @@ server <- function(input, output) {
             labs(x = "Average Permits Granted Per Month", 
                  y = "Number of Gun Violence Incidents") +
             scale_y_log10() +
-            scale_x_log10() )) %>%
+            scale_x_log10() ) %>%
            style(hoverinfo = "text",
                  hovertext = paste("Region:", permit2$region))
           
