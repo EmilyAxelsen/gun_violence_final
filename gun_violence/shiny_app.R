@@ -108,8 +108,10 @@ br(),
 # Here, I create a new tab called "Additional Data Visualizations for 
 # 2013" and print out the gt graph.
      
-              tabPanel("Additional Data Visualizations for 2013",
-                        imageOutput("graph3")),
+              tabPanel("More Permits = More Gun Violence",
+                       h3("The states that granted a high number of permits in 2013 also saw a high number of gun violence incidents."),
+                       h4("Notice that 4 of the 8 highlighted states are in the south."),
+                       imageOutput("graph3")),
 
 # Next, I'm making my Regression tab.
 
@@ -121,25 +123,39 @@ br(),
 # rather than plotlyOutput. 
 # Between my plotOutputs and plotlyOutputs I also added text. 
                         
-                        h4("The impact of gun permits granted on the number of gun violence incidents:"),
+                        h3("The Impact of Permits Granted on the Number of Gun Violence Incidents"),
                         plotOutput("regressiongraph2"),
-                        h5("All data points are shown in the graph above."),
+                        h5("All 227,885 data points are shown in the graph above."),
+                        h5("As the number of permits granted increases, the number of gun violence incidents increase"),
+                        h3("Number of Permits Granted and Gun Violence Incidents By Region"),
                         plotlyOutput("regressionsssgraph"),
                         h5("The x-axis is scaled by log in order to better see the points."),
                         h5("Notice that for a fixed number of permits, the South has more gun violence incidents than average as most of the data points for the South are above the line of best fit."),
-                        plotlyOutput("regressiongraph")),
+                        h3("Number of Permits Granted and Gun Violence Incidents By State"),
+                        h4("An Analysis of the 50 US States"),
+                        plotlyOutput("regressiongraph"),
+                        h5("The confidence intervals are small because there are over 227,000 gun violence incidents in my dataset.")),
                
 # My Regression Coefficient Plot tab calls the regressiondata output defined
 # in my server. 
 
                tabPanel("Regression Coefficient Plot",
-                        h4("Coefficient plot with the intercept"),
+                        h3("Coefficient plot with the intercept"),
+                        h4("The following plots estimate the number of gun violence incidents dependent on the number of permits granted and the population."),
                         plotOutput("originalcoef"),
                         h5("In the above plot, the intercept coefficient is much larger than the other coefficients in the regression. 
-                           Therefore, the other coefficients appear to be zero. In order to more accurately see the variables in my 
+                           Therefore, the other coefficients appear to be almost zero. In order to more accurately see the variables in my 
                            regression, please see the fixed effects model."),
-                        h4("Fixed effects model (omitting the intercept)"),
-                        plotOutput("regressiondata")),
+                        h5("This coefficient plot shows the estimates for permit and population. The horizontal lines show the 95% confidence
+                           intervals. If we were to get different samples using the same methods, it would be expected that the values of 
+                           permit and population would be within the lines of the confidence interval 95% of the time."),
+                        h5("The intercept is also known as the constant value and is thus the expected regression estimate."),
+                        h3("Fixed effects model (omitting the intercept)"),
+                        plotOutput("regressiondata"),
+                        h5("In the plots, a positive coefficient indicates a positve relationship with the dependent variable while a negative
+                           coefficient indicates a negative relaitonship with the dependent variable."),
+                        h5("Therefore, a higher population indicates more gun violence incidents while more permits leads to a slight decrease
+                           in the number of gun violence incidents.")),
                         
 
 # Here, I make my state policy correlation tab and include descriptive text.
@@ -159,31 +175,38 @@ br(),
                         plotOutput("statepolicy1"),
                         h4("States that did not require gun registration:"),
                         plotOutput("statepolicy2"),
-                        h5("States that required gun registration in 2013 and 2014 did not see a significant decrease in the number of gun violence incidents.")),
+                        h5("States that required gun registration in 2013 and 2014 did not see a significant decrease in the number of 
+                           gun violence incidents.")),
 
 # Here, I format my purpose and conclusions tab. 
 
                tabPanel("Purpose and Conclusions",
                          mainPanel(
-                         h2("Why is analyzing data related to gun violence important?"),
+                         h3("Why is analyzing data related to gun violence important?"),
                          h5("Every day, 96 people die from gun violence and 222 people are shot and survive ", a("(source)", href="https://www.teamenough.org/gun-violence-statistics"), "Gun violence impacts people of all ages and mass shootings are increasingly common. What are the leading causes of gun violence? What factors lead to an increase in gun violence and what policies fail to make an impact on gun violence?"),
                          h5("It is widely accepted that gun violence increases in summer months. An ", a("article", href="https://www.nytimes.com/2018/09/21/upshot/a-rise-in-murder-lets-talk-about-the-weather.html"), "called “A Rise in Murder? Let’s Talk About the Weather,” published in the New York Times in September 2018, suggests that murders increase in summer months. Additionally ", a("Giffords Law Center to Prevent Gun Violence", href="https://lawcenter.giffords.org/resources/publications/shootings-spike-in-summer-months/"), "also argues that the number of murders increase as the temperature increases in summer months. However, just as the effects of gun violence are wide-reaching, impacting individuals as well as community sentiment, I argue that there is no single cause of gun violence in the United States."), 
-                         h2("Why is it important to specifically analyze the number of gun permits granted?"),
+                         h3("Why is it important to specifically analyze the number of gun permits granted?"),
                          h5("On November 25, 2019, USA Today published an article that detailed the sudden increase in 
                            background checks as a result of protests for stricter gun laws following gun violence incidents."),
                          h5("Therefore, an increase in background checks is often spurred by a fear of more restrictive gun laws."),
                          h6("To read more about the increase in gun violence permits, please see the ", a("USA Today Article.", href="https://www.usatoday.com/story/news/politics/2019/11/25/fbi-background-checks-rise-amid-mass-shootings-calls-gun-control/4228725002/ ")
                            ),
-                         h2("Conclusions"),
+                         h3("Conclusions"),
                          h5("In 2013, the number of permits sold increased between January and June, the month in which the most permits were sold, before decreasing. In 2014, the most permits were sold in March and decreased July and November. In 2015, March was the month in which the second most number of permits were sold. Permits sold generally decreased in the summer months of 2015. In 2016, the most number of permits were sold in March and permits sold increased between May and July. Finally in 2017, the number of permits sold decreased after reaching a high point in March. Therefore, March is most commonly the month where the most permits were sold. This is significant because more guns in March would therefore lead to more gun violence incidents in the summer months."),
-                         h5("An increase in permits granted correlates to higher numbers of gun violence incidents. For a fixed number of permits, southern states have more gun violence incidents than the midwest, northeast, and west. Western states had the most spread out gun violence incidents when compared to the average number of permits granted per month. Although gun violence activists often call for stricter gun violence policies, such as gun registration, the data does not show a significant change in the number of incidents with different gun registration policies. In other words, states that required gun registration had very similar rates of gun violence incidents when compared to states that did not require gun registrations.")),
+                         h5("An increase in permits granted correlates to higher numbers of gun violence incidents. For a fixed number of 
+                            permits, southern states have more gun violence incidents than the midwest, northeast, and west. Western states 
+                            had the most spread out gun violence incidents when compared to the average number of permits granted per month. 
+                            Although gun violence activists often call for stricter gun violence policies, such as gun registration, the 
+                            data does not show a significant change in the number of incidents with different gun registration policies. 
+                            In other words, states that required gun registration had very similar rates of gun violence incidents when 
+                            compared to states that did not require gun registrations."))),
          
 # Finally, I created my About tab and used the textOutput function to define
 # the text that I want on my About page. 
 
                   tabPanel("About",
                         mainPanel(
-                          h2("Data Sources"),
+                          h3("Data Sources"),
                           h5("The plots are created using data from ", a("The National Instant Criminal Background Check System (NICS)", href="https://www.fbi.gov/services/cjis/nics"), ", provided by the Federal Bureau of Investigation. Background checks are strong indicators of the number of firearms sold."),
                           h5("Population data was also gathered from ", a("The United States Census Bureau", href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-state-total.html"), ", which gathers population data from the 2010s."),
                           h5("In order to find the number of gun violence incidents, I used a ", a("Gun Violence", href="https://www.kaggle.com/jameslko/gun-violence-data"), " data set"),
@@ -191,18 +214,21 @@ br(),
                           h5("Finally, I also used a dataset created by the Institute for Public Policy and Social Research called ", a("Correlates of State Policy", href="http://ippsr.msu.edu/public-policy/correlates-state-policy"), ", which includes state policy data related to gun violence, such as states that require gun registration."),
                           h5("Citation for State Policy Dataset"),
                           h6("Jordan, Marty P. and Matt Grossmann. 2017. The Correlates of State Policy Project v.2.1. East Lansing, MI: Institute for Public Policy and Social Research (IPPSR)."),
-                          h2("About Me"),
+                          h3("About Me"),
                           h5("Hi! My name is Emily Axelsen and I am first-year student at Harvard College studying History and passionate about data science and R."),
                           h5("This project was created for a course called Gov 1005: Data Science fall semester 2019."),
                           h5("Contact me at emilyaxelsen@college.harvard.edu."),
                           h5("The code for my Shiny App can be found at my ", a("GitHub", href="https://github.com/EmilyAxelsen"),"."),
-                          h2("Detailed Explanation of Data & Sources"),
-                          h5("Just as the effects of gun violence are wide-reaching, impacting individuals as well as community sentiment, there is no single cause of gun violence in the United States. Therefore, I am interested in analyzing how gun violence correlates to economic injustice and the impact of community-based programs."),
-                          h5("Does data show that communities with gun violence programs actually experience a decrease in gun violence? By evaluating the statistically significant rates of gun violence compared to the population, I located the cities on which to focus my analysis. The Federal Bureau of Investigation’s National Instant Criminal Background Check System (NICS) provides data on how many background checks were conducted in the United States. This data is converted from PDF to CSV by Buzzfeed News and is significant as firearm background checks often have a close correlation to gun sales and therefore are a good indication of a state’s gun sales. Through my data analysis, I plan to explore whether there is a connection between increased gun sales and more gun violence."),
-                          h5("To determine public policies related to guns, I made use of a dataset that compiles information about different state’s public policies. Students and scholars through Michigan State University’s Institute for Public Policy and Social Research worked to organize and make policy data publicly available. Through The Trace, a resource that publishes information related to gun violence, I acquired a data source that provides information on the state, date, number killed, number injured, and age group for over 230,000 incidents involving gun violence. This gun violence datasource is from an organization called Gun Violence Archive which finds data by combing through local and state police and other government sources that report gun violence and crime."),
-                          h5("To compare the number of background checks conducted, the number of public policies compared to population size, and gun violence incidents, I located a data source that provides population information for more than 28,000 United States cities and towns. This data was compiled through the use of data from the United States Census Bureau and the United States Geological Survey."),
-                          h2("Site Navigation"),
-                          h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits granted per month then graphs the top ten states that granted the most permits for that month where the most number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear regression model of the number of permits granted per month in relation to the number of gun violence incidents. The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most concentrated. Users may also hover over each point to see more information about the point. The regression coefficient plot is a visual representation of my linear regression."))),
+                          h3("Site Navigation"),
+                          h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well 
+                             as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits 
+                             granted per month then graphs the top ten states that granted the most permits for that month where the most 
+                             number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents 
+                             per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear 
+                             regression model of the number of permits granted per month in relation to the number of gun violence incidents. 
+                             The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most 
+                             concentrated. Users may also hover over each point to see more information about the point. The regression 
+                             coefficient plot is a visual representation of my linear regression.")),
                          
                           )))
   
@@ -294,31 +320,23 @@ server <- function(input, output) {
 # Graph with 95% confidence intervals instead of each data point itself.
     
         output$regressiongraph <- renderPlotly({
-          permit1 <- final_gun_violence_data %>%
-            group_by(year, state, permit, population) %>% 
-            summarise(n_incidents = n()) 
-          hide_legend(ggplotly(
+          
           permit1 %>%
             ggplot(aes(x = permit, y = n_incidents, color = state)) +
             geom_jitter(show.legend = FALSE) +
-            geom_smooth(method = 'lm', col = 'black') +
-            scale_x_continuous(limits = c(0, 10)) + 
-            scale_y_continuous(limits = c(0, 10)) +
-            coord_cartesian(xlim=c(0,10), ylim=c(0,10)) + 
-            labs(x = "Number of Gun Violence Incidents", 
-                 y = "Average Permits Granted Per Month",
-                 title = "Impact of Permits Granted on Number of Gun Violence Incidents",
-                 subtitle = "An Analysis of the 50 US States",
-                 caption = "Source: The National Instant Criminal Background Check System and " +
+            geom_smooth(method = 'lm',col = 'black')+
+            scale_x_continuous(limits = c(0, 20000))+
+            scale_y_continuous(limits = c(0, 2000)) +
+            labs(x = "Average Permits Granted Per Month", 
+                 y = "Number of Gun Violence Incidents") +
+                  
                    
 # I scaled the x and y axes by log10 in order to see the data easier. 
 # I chose to scale the x and y axis in order to maintain the validity 
-# of the data and just scaled down the x and y axis values.                    
-                   
-                scale_y_log10() +
-                scale_x_log10() 
-            )))
+# of the data and just scaled down the x and y axis values.            
             
+                   scale_y_log10() +
+                   scale_x_log10() 
         })
         
                 
