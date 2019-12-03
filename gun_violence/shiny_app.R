@@ -255,7 +255,8 @@ server <- function(input, output) {
     output$graph3 <- renderImage({
       year <-"gt.png"
         
-# Here I format to make sure the user can read the gt. 
+# Here I format to make sure the user can read the gt by specifying
+# the size of the gt image. 
         
         list(src=year,
              width = 800,
@@ -263,17 +264,13 @@ server <- function(input, output) {
              align = "center")
     },
 
-# Also don't want to delete my gt. 
+# Also, I don't want to delete my gt. 
 
     deleteFile = FALSE )
     
 # Here, I used ggplotly to create a dynamic graph that the user can 
 # interact with. In order to make the ggplotly, I simply wrapped my 
-# ggplot with the ggplotly function. This ggplot is the same ggplot
-# as the one that appears next in my Shiny. However, I scaled the x
-# and y axes by log10 in order to see the data easier. 
-# I chose to scale the x and y axis in order to maintain the validity
-# of the data and just scaled down the x and y axis values. 
+# ggplot with the ggplotly function. 
     
     
 # Graph with 95% confidence intervals instead of each data point itself.
@@ -295,35 +292,64 @@ server <- function(input, output) {
                  title = "Impact of Permits Granted on Number of Gun Violence Incidents",
                  subtitle = "An Analysis of the 50 US States",
                  caption = "Source: The National Instant Criminal Background Check System and " +
+                   
+# I scaled the x and y axes by log10 in order to see the data easier. 
+# I chose to scale the x and y axis in order to maintain the validity 
+# of the data and just scaled down the x and y axis values.                    
+                   
                 scale_y_log10() +
                 scale_x_log10() 
             )))
             
         })
         
-        
+                
         output$regressionsssgraph <- renderPlotly({
           permit2 <- final_gun_violence_data %>%
             group_by(year, state, permit, population) %>% 
             summarise(n_incidents = n()) %>%
+            
+# Within mutate, I specify the region with a series of ifelse statements.
+# If the state is within the list of states I specify, then it will be 
+# assigned that region. Until the state matches a state in the list, it
+# continues to go through the series of ifelse statements until it reaches 
+# the end when it is specified as "District of Columbia." 
+            
             mutate(region = ifelse(state %in% c("Wisconsin", "Michigan", "Ohio", "Indiana", "Illinois", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota"), "Midwest",
                             ifelse(state %in% c("Delaware", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "Virginia", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas"), "South",
                             ifelse(state %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont", "New Jersey", "New York", "Pennslyvania"), "Northeast",
                             ifelse(state %in% c("Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington"), "West", "District of Columbia")))))
          ggplotly(
           permit2 %>%
+            
+# I wanted the colors of each point to be defined by region to be able to 
+# quickly determine which regions have increased gun violence compared to
+# other regions. 
+            
             ggplot(aes(x = permit, y = n_incidents, color = region)) +
             geom_jitter(show.legend = FALSE) +
+  
+# Calling the geom_smooth function allowed me to add a regression line.
+  
             geom_smooth(method = 'lm', col = 'black') + 
             labs(x = "Average Permits Granted Per Month", 
                  y = "Number of Gun Violence Incidents") +
             scale_y_log10() +
             scale_x_log10() ) %>%
+           
+# The style function allowed me to define what information I wanted
+# to show up in the box that appears when I hover over a specific point
+# in my plotly. I also called region from within my permit2. 
+           
            style(hoverinfo = "text",
                  hovertext = paste("Region:", permit2$region))
           
         })
         
+# Here, in order to apply this code to multiple years, I filter 
+# for the year that the user specifies with input$year. 
+# Next, I make a graph with the states that require gun registration. 
+# I also find the number of incidents by summarising n. 
         
         output$statepolicy1 <- renderPlot({
           incidents_regis_requir <- policy_and_checks %>%
@@ -332,51 +358,60 @@ server <- function(input, output) {
             group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
             summarise(n_incidents = n()) 
         
+# Remember that setting fill equal to the values on the x or y axis results
+# in different color bar plots. 
+          
           ggplot(incidents_regis_requir, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
             geom_col(show.legend = FALSE) +
             coord_flip() +
             labs(x = "State", y = "Number of Incidents")
-                 #title = "Incidents in States With Required Gun Registration",
-                 #subtitle = "Do the number of gun violence incidents decrease when gun registration is required?")
         })
+        
+# Here, I make my state policy graph remembering to set the year equal to 
+# the year the user specifies with input$year. 
         
         output$statepolicy2 <- renderPlot({
           incidents_regis_requir2 <- policy_and_checks %>%
             filter(year == input$year) %>%
+            
+# This graph shows the states where gun registration is not required which
+# is therefore FALSE in the dataset. 
+            
             filter(w_guncontrol_registration_requir == "FALSE") %>%
             group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
             summarise(n_incidents = n()) 
+          
+# Since the states have longer titles, I wanted to put them on the y-axis.           
       
           ggplot(incidents_regis_requir2, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
             geom_col(show.legend = FALSE) +
             coord_flip() +
             labs(x = "State", y = "Number of Incidents")
-                 #title = "Incidents in States Where Gun Registration Is Not Required",
-                 #subtitle = "Do the number of gun violence incidents decrease when gun registration is required?")
         })
         
 # This plot is a graph of my regression. I made sure to call renderPlot
 # rather than renderPlotly here because my graph is a plot rather than a 
-# plotly. Remember that geom_jitter AND geom_smooth are useful when creating
-# regression graphs. Within geom_smooth, I specified the model as 'lm' and 
-# set the color equal to 'black. 
-# The labs function is always used to specify the titles, subtitles, captions
-# (for the source of the data) as well as the x and y axis labels. 
+# plotly. 
         
         output$regressiongraph2 <- renderPlot({
-          
           permit1 <- final_gun_violence_data %>%
             group_by(year, state, permit, population) %>% 
             summarise(n_incidents = n()) 
           
+# Remember that geom_jitter AND geom_smooth are useful when creating
+# regression graphs. Within geom_smooth, I specified the model as 'lm' and 
+# set the color equal to 'black.           
           
             permit1 %>%
                 ggplot(aes(x = permit, y = n_incidents, color = state)) +
                 geom_jitter(show.legend = FALSE) +
                 geom_smooth(method = 'lm', se = F, col = 'black') +
+              
+# The labs function is always used to specify the titles, subtitles, captions
+# (for the source of the data) as well as the x and y axis labels.               
+              
                 labs(x = "Number of Gun Violence Incidents", 
                      y = "Average Permits Granted Per Month") 
-            
         })
         
 # Here, I create another plot using my final_gun_violence_data dataset. 
@@ -387,21 +422,24 @@ server <- function(input, output) {
         output$permitpermontheighteen <- renderPlot({
             final_gun_violence_data %>%
                 filter(year == input$chosenyear) %>%
+            
+# Next, I create a regular bar plot and remember to set show.legend = 
+# FALSE since I don't want to include a legend in my plot. 
+            
                 ggplot(aes(x = month, y = permit, fill = month)) + 
                 geom_bar(stat = 'identity', show.legend = FALSE) +
                 labs(x = "Month", 
-                     y = "Number of Permits Granted"
-                #      title = "The Number of Gun Permits Granted Per Month",
-                #      subtitle = "Do Gun Permits Sold Increase in Summer Months?",
-                #      caption = "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov
-                                ) +
+                     y = "Number of Permits Granted") +
+            
+# I specified scale_y_continuous with labels as commas in order to 
+# appropriately format the numbers on the y axis. 
+            
             scale_y_continuous(labels = comma)
         })
     
 # I created my regression within a renderPlot and called the result
 # regressiondata so I can then call regression data within my ui and
-# have the result in my Shiny app. Remember that coefplot is a way
-# to visualize the regression and is from the library coefplot. 
+# have the result in my Shiny app.  
                 
         output$regressiondata <- renderPlot({
           permit1 <- final_gun_violence_data %>%
@@ -411,6 +449,9 @@ server <- function(input, output) {
           ggplot(
             m1 <- lm(n_incidents ~ permit + population, data = permit1))
             
+# Remember that coefplot is a way to visualize the regression and 
+# is from the library coefplot.
+          
             coefplot(m1)
             
         })
@@ -422,13 +463,18 @@ server <- function(input, output) {
             
 # In order to get my permit_2013 filtered data, I first piped my
 # final_gun_violence_data set into select to select for only the
-# variables I want. Next, I filtered for the 6th month (June) 
+# variables I want. Next, I filtered for the 3rd month (March) 
 # since I know that's the month that the most permits were granted 
 # in the majority of the years 2013-2017. 
             
             permit_2013 <- final_gun_violence_data %>%
                 select(state, permit, year, month) %>%
                 filter(month == "03") %>%
+              
+# In order to be able to apply this to multiple years, I specified
+# the year to be input$chosenyear which sets the year equal to the 
+# year chosen by the user.
+              
                 filter(year == input$chosenyear) %>%
                 unique() %>%
                 arrange(desc(permit))  %>%
@@ -447,26 +493,25 @@ server <- function(input, output) {
             ggplot(permit_2013, aes(x = reorder(state, permit), y = permit, fill = state)) +
                 geom_col(show.legend = FALSE) +
                 coord_flip() +
+              
+# I specified my axis titles with labs. 
+              
                 labs(x = "State", 
-                     y = "Number of Permits Granted"
-                      #title = "The Number of Gun Permits Granted Per State in March",
-                      #subtitle = "The 10 States With That Granted The Highest Number of Permits",
-                     #caption = "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov"
-                             ) +
+                     y = "Number of Permits Granted") +
+              
+# Here, I added commas to my y-axis numbers.
+              
               scale_y_continuous(labels = comma)
         }
         )
         
-        
-        output$Text_drop_down <- renderText({
-          "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov"
-        })
-
 # Here, I define my output$Text as renderText and list the text I want in
 # quotes. Remember that I use output$Text in order to be able to call the 
 # output in my ui. 
-        
-        
+          
+        output$Text_drop_down <- renderText({
+          "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov"
+        })
     }
     
 
