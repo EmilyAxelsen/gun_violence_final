@@ -82,7 +82,7 @@ br(),
 # I wanted to emphasize certain important information points with page breaks and
 # text in different sizes. 
 
-               tabPanel("More Permits = More Gun Violence?",
+               tabPanel("Which states granted the most permits?",
                         br(),
                         h3("Which month granted the most permits per year 2013-2017?"),
                         h4("In the month that granted the most permits, what were the ten states that granted the most permits."),
@@ -154,10 +154,27 @@ br(),
                         plotOutput("statepolicy2"),
                         h5("States that required gun registration in 2013 and 2014 did not see a significant decrease in the number of gun violence incidents.")),
 
+# Here, I format my purpose and conclusions tab. 
+
+               tabPanel("Purpose and Conclusions",
+                         mainPanel(
+                         h2("Why is analyzing data related to gun violence important?"),
+                         h5("Every day, 96 people die from gun violence and 222 people are shot and survive ", a("(source)", href="https://www.teamenough.org/gun-violence-statistics"), "Gun violence impacts people of all ages and mass shootings are increasingly common. What are the leading causes of gun violence? What factors lead to an increase in gun violence and what policies fail to make an impact on gun violence?"),
+                         h5("It is widely accepted that gun violence increases in summer months. An ", a("article", href="https://www.nytimes.com/2018/09/21/upshot/a-rise-in-murder-lets-talk-about-the-weather.html"), "called “A Rise in Murder? Let’s Talk About the Weather,” published in the New York Times in September 2018, suggests that murders increase in summer months. Additionally ", a("Giffords Law Center to Prevent Gun Violence", href="https://lawcenter.giffords.org/resources/publications/shootings-spike-in-summer-months/"), "also argues that the number of murders increase as the temperature increases in summer months. However, just as the effects of gun violence are wide-reaching, impacting individuals as well as community sentiment, I argue that there is no single cause of gun violence in the United States."), 
+                         h2("Why is it important to specifically analyze the number of gun permits granted?"),
+                         h5("On November 25, 2019, USA Today published an article that detailed the sudden increase in 
+                           background checks as a result of protests for stricter gun laws following gun violence incidents."),
+                         h5("Therefore, an increase in background checks is often spurred by a fear of more restrictive gun laws."),
+                         h6("To read more about the increase in gun violence permits, please see the ", a("USA Today Article.", href="https://www.usatoday.com/story/news/politics/2019/11/25/fbi-background-checks-rise-amid-mass-shootings-calls-gun-control/4228725002/ ")
+                           ),
+                         h2("Conclusions"),
+                         h5("In 2013, the number of permits sold increased between January and June, the month in which the most permits were sold, before decreasing. In 2014, the most permits were sold in March and decreased July and November. In 2015, March was the month in which the second most number of permits were sold. Permits sold generally decreased in the summer months of 2015. In 2016, the most number of permits were sold in March and permits sold increased between May and July. Finally in 2017, the number of permits sold decreased after reaching a high point in March. Therefore, March is most commonly the month where the most permits were sold. This is significant because more guns in March would therefore lead to more gun violence incidents in the summer months."),
+                         h5("An increase in permits granted correlates to higher numbers of gun violence incidents. For a fixed number of permits, southern states have more gun violence incidents than the midwest, northeast, and west. Western states had the most spread out gun violence incidents when compared to the average number of permits granted per month. Although gun violence activists often call for stricter gun violence policies, such as gun registration, the data does not show a significant change in the number of incidents with different gun registration policies. In other words, states that required gun registration had very similar rates of gun violence incidents when compared to states that did not require gun registrations.")),
+         
 # Finally, I created my About tab and used the textOutput function to define
 # the text that I want on my About page. 
-               
-               tabPanel("About",
+
+                  tabPanel("About",
                         mainPanel(
                           h2("Data Sources"),
                           h5("The plots are created using data from ", a("The National Instant Criminal Background Check System (NICS)", href="https://www.fbi.gov/services/cjis/nics"), ", provided by the Federal Bureau of Investigation. Background checks are strong indicators of the number of firearms sold."),
@@ -178,15 +195,9 @@ br(),
                           h5("To determine public policies related to guns, I made use of a dataset that compiles information about different state’s public policies. Students and scholars through Michigan State University’s Institute for Public Policy and Social Research worked to organize and make policy data publicly available. Through The Trace, a resource that publishes information related to gun violence, I acquired a data source that provides information on the state, date, number killed, number injured, and age group for over 230,000 incidents involving gun violence. This gun violence datasource is from an organization called Gun Violence Archive which finds data by combing through local and state police and other government sources that report gun violence and crime."),
                           h5("To compare the number of background checks conducted, the number of public policies compared to population size, and gun violence incidents, I located a data source that provides population information for more than 28,000 United States cities and towns. This data was compiled through the use of data from the United States Census Bureau and the United States Geological Survey."),
                           h2("Site Navigation"),
-                          h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits granted per month then graphs the top ten states that granted the most permits for that month where the most number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear regression model of the number of permits granted per month in relation to the number of gun violence incidents. The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most concentrated. Users may also hover over each point to see more information about the point. The regression coefficient plot is a visual representation of my linear regression."),
-                          h2("Why is it important to analyze the number of gun permits granted?"),
-                          h5("On November 25, 2019, USA Today published an article that detailed the sudden increase in 
-                           background checks as a result of protests for stricter gun laws following gun violence incidents."),
-                          h5("Therefore, an increase in background checks is often spurred by a fear of more restrictive gun laws."),
-                          h6("To read more about the increase in gun violence permits, please see the ", a("USA Today Article.", href="https://www.usatoday.com/story/news/politics/2019/11/25/fbi-background-checks-rise-amid-mass-shootings-calls-gun-control/4228725002/ ")
-                          ),
-                          
-                          ))))
+                          h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits granted per month then graphs the top ten states that granted the most permits for that month where the most number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear regression model of the number of permits granted per month in relation to the number of gun violence incidents. The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most concentrated. Users may also hover over each point to see more information about the point. The regression coefficient plot is a visual representation of my linear regression."))),
+                         
+                          )))
   
 
   
