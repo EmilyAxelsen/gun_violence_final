@@ -133,7 +133,14 @@ br(),
 # in my server. 
 
                tabPanel("Regression Coefficient Plot",
+                        h4("Coefficient plot with the intercept"),
+                        plotOutput("originalcoef"),
+                        h5("In the above plot, the intercept coefficient is much larger than the other coefficients in the regression. 
+                           Therefore, the other coefficients appear to be zero. In order to more accurately see the variables in my 
+                           regression, please see the fixed effects model."),
+                        h4("Fixed effects model (omitting the intercept)"),
                         plotOutput("regressiondata")),
+                        
 
 # Here, I make my state policy correlation tab and include descriptive text.
 # Remember that br() causes a page break.
@@ -451,22 +458,43 @@ server <- function(input, output) {
 # I created my regression within a renderPlot and called the result
 # regressiondata so I can then call regression data within my ui and
 # have the result in my Shiny app.  
-                
-        output$regressiondata <- renderPlot({
+        
+        output$originalcoef <- renderPlot({
           permit1 <- final_gun_violence_data %>%
             group_by(year, state, permit, population) %>% 
             summarise(n_incidents = n()) 
           
           ggplot(
             m1 <- lm(n_incidents ~ permit + population, data = permit1))
-            
-# Remember that coefplot is a way to visualize the regression and 
-# is from the library coefplot.
           
-            coefplot(m1)
-            
+          A <- coefplot(m1)
+          A + theme_bw() + 
+            scale_y_discrete(labels=c("Constant", "Permit", "Population")) +
+            scale_x_continuous(name="Regression Estimate") +
+            labs(title = "")
+          
         })
-        
+                
+        output$regressiondata <- renderPlot({
+          
+          ggplot(
+            
+            m2 <- lm(n_incidents ~ permit + population + as.factor(state) + as.factor(year), data = permit1))
+            
+            summary(m2)
+
+# Remember that coefplot is a way to visualize the regression and 
+# is from the library coefplot.            
+            
+            B <- coefplot(m2, coefficients = c("permit", "population"))
+            B + theme_bw() + 
+              scale_y_discrete(labels=c("Permit", "Population")) +
+              scale_x_continuous(name="Regression Estimate") +
+              labs(title = "")
+            
+          })
+          
+      
 # Remember that you must specify the output in order to call the
 # output in your ui. 
         
