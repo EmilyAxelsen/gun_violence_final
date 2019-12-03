@@ -156,6 +156,7 @@ br(),
                           h5("Hi! My name is Emily Axelsen and I am first-year student at Harvard College studying History and passionate about data science and R."),
                           h5("This project was created for a course called Gov 1005: Data Science fall semester 2019."),
                           h5("Contact me at emilyaxelsen@college.harvard.edu."),
+                          h5("The code for my Shiny App can be found at my ", a("GitHub", href="https://github.com/EmilyAxelsen"),"."),
                           h2("Detailed Explanation of Data & Sources"),
                           h5("Just as the effects of gun violence are wide-reaching, impacting individuals as well as community sentiment, there is no single cause of gun violence in the United States. Therefore, I am interested in analyzing how gun violence correlates to economic injustice and the impact of community-based programs."),
                           h5("Does data show that communities with gun violence programs actually experience a decrease in gun violence? By evaluating the statistically significant rates of gun violence compared to the population, I located the cities on which to focus my analysis. The Federal Bureau of Investigation’s National Instant Criminal Background Check System (NICS) provides data on how many background checks were conducted in the United States. This data is converted from PDF to CSV by Buzzfeed News and is significant as firearm background checks often have a close correlation to gun sales and therefore are a good indication of a state’s gun sales. Through my data analysis, I plan to explore whether there is a connection between increased gun sales and more gun violence."),
@@ -237,7 +238,7 @@ server <- function(input, output) {
 # is only for 2013 data, I only call it if the input is 2013. 
     
     output$graph3 <- renderImage({
-        if(input$currentyear==2013) year <-"gt.png"
+      year <-"gt.png"
         
 # Here I format to make sure the user can read the gt. 
         
