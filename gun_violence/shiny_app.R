@@ -78,7 +78,9 @@ br(),
                          plotOutput("permiteighteen")),
                          
 
-# Next, I define my next tabPanel as "Slider Graphics."
+# Next, I define my next tabPanel as "More Permits = More Gun Violence?"
+# I wanted to emphasize certain important information points with page breaks and
+# text in different sizes. 
 
                tabPanel("More Permits = More Gun Violence?",
                         br(),
@@ -96,13 +98,16 @@ br(),
                                     "Year", min = 2013, max = 2017, value = 500, animate = TRUE),
 
 # I use the imageOutput function in order to call the graphs that I define in 
-# the server as graph, graph2, and graph 3.
+# the server as graph and graph 2.
+# I once again provided descriptive information about my graphs.
                         
                         imageOutput("graph"),
                         imageOutput("graph2"),
                         h5("In 2014, 2016, and 2017, the highest number of permits were granted in March. Therefore, the number of guns would increase going into the summer months which therefore leads to increased violence according to the data.")),
           
-      
+# Here, I create a new tab called "Additional Data Visualizations for 
+# 2013" and print out the gt graph.
+     
               tabPanel("Additional Data Visualizations for 2013",
                         imageOutput("graph3")),
 
@@ -111,7 +116,10 @@ br(),
                tabPanel("Visualizing Linear Regressions",
                         
 # I used plotly on my regressiongraph so I had to call plotlyOutput rather
-# than just plotOutput as for my regressiongraph2. 
+# than just plotOutput as for my regressiongraph.
+# However, my regressionsgraph2 is just a plot so I called out plotOutput
+# rather than plotlyOutput. 
+# Between my plotOutputs and plotlyOutputs I also added text. 
                         
                         h4("The impact of gun permits granted on the number of gun violence incidents:"),
                         plotOutput("regressiongraph2"),
@@ -127,9 +135,16 @@ br(),
                tabPanel("Regression Coefficient Plot",
                         plotOutput("regressiondata")),
 
+# Here, I make my state policy correlation tab and include descriptive text.
+# Remember that br() causes a page break.
+
                tabPanel("State Policy Correlation",
                         h3("Do state-wide gun registration requirements lead to less gun violence incidents?"),
                         br(),
+                        
+# SelectInput creates a dropdown bar where you can select the year.
+# Depending on the year, U print out two graphs (statepolicy1 and
+# statepolicy2). 
                         
                         selectInput("year",
                                     "Select Year:", unique(new_data2$year)),  
