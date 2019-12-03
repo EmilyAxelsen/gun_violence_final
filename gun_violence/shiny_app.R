@@ -108,7 +108,7 @@ br(),
 # Here, I create a new tab called "Additional Data Visualizations for 
 # 2013" and print out the gt graph.
      
-              tabPanel("More Permits = More Gun Violence",
+              tabPanel("More Permits = More Gun Violence?",
                        h3("The states that granted a high number of permits in 2013 also saw a high number of gun violence incidents."),
                        h4("Notice that 4 of the 8 highlighted states are in the south."),
                        imageOutput("graph3")),
