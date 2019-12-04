@@ -176,7 +176,8 @@ br(),
                         h5("States that required gun registration in 2013 and 2014 did not see a significant decrease in the number of 
                            gun violence incidents.")),
 
-# Here, I format my purpose and conclusions tab. 
+# Here, I format my purpose and conclusions tab.
+# Remember that h3 is bigger than h5 (smaller numbers means bigger text).
 
                tabPanel("Purpose and Conclusions",
                          mainPanel(
