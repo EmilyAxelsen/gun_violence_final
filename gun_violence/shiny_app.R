@@ -44,7 +44,7 @@ new_data2 <- final_gun_violence_data %>%
 
 ui <- fluidPage(theme = shinytheme("flatly"),
                 
-    navbarPage("More Permits More Problems?: Tracing Factors Correlated to Gun Violence",
+    navbarPage("More Permits More Problems? Tracing Factors Correlated to Gun Violence",
                
 # I'm adding my tabPanel called "2013-2017 Gun Violence in March" and calling the 
 # selectInput I defined in the server for the "chosenyear" variable. I ask the 
@@ -87,7 +87,6 @@ br(),
                         h3("Which month granted the most permits per year 2013-2017?"),
                         h4("In the month that granted the most permits, what were the ten states that granted the most permits."),
                         br(),
-                        
                         
 # My slider input defines the values I want on my slider, in this case values 
 # 2013-2017 to represent the years I have data for. I set animate equal to TRUE 
@@ -156,8 +155,7 @@ br(),
                            coefficient indicates a negative relaitonship with the dependent variable."),
                         h5("Therefore, a higher population indicates more gun violence incidents while more permits leads to a slight decrease
                            in the number of gun violence incidents.")),
-                        
-
+                      
 # Here, I make my state policy correlation tab and include descriptive text.
 # Remember that br() causes a page break.
 
@@ -189,8 +187,7 @@ br(),
                          h5("On November 25, 2019, USA Today published an article that detailed the sudden increase in 
                            background checks as a result of protests for stricter gun laws following gun violence incidents."),
                          h5("Therefore, an increase in background checks is often spurred by a fear of more restrictive gun laws."),
-                         h6("To read more about the increase in gun violence permits, please see the ", a("USA Today Article.", href="https://www.usatoday.com/story/news/politics/2019/11/25/fbi-background-checks-rise-amid-mass-shootings-calls-gun-control/4228725002/ ")
-                           ),
+                         h6("To read more about the increase in gun violence permits, please see the ", a("USA Today Article.", href="https://www.usatoday.com/story/news/politics/2019/11/25/fbi-background-checks-rise-amid-mass-shootings-calls-gun-control/4228725002/")),
                          h3("Conclusions"),
                          h5("In 2013, the number of permits sold increased between January and June, the month in which the most permits were sold, before decreasing. In 2014, the most permits were sold in March and decreased July and November. In 2015, March was the month in which the second most number of permits were sold. Permits sold generally decreased in the summer months of 2015. In 2016, the most number of permits were sold in March and permits sold increased between May and July. Finally in 2017, the number of permits sold decreased after reaching a high point in March. Therefore, March is most commonly the month where the most permits were sold. This is significant because more guns in March would therefore lead to more gun violence incidents in the summer months."),
                          h5("An increase in permits granted correlates to higher numbers of gun violence incidents. For a fixed number of 
@@ -229,10 +226,7 @@ br(),
                              The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most 
                              concentrated. Users may also hover over each point to see more information about the point. The regression 
                              coefficient plot is a visual representation of my linear regression.")),
-                         
                           )))
-  
-
   
 # This is the start of my server section, rather than the ui section.    
     
@@ -320,7 +314,7 @@ server <- function(input, output) {
 # Graph with 95% confidence intervals instead of each data point itself.
     
         output$regressiongraph <- renderPlotly({
-          
+          ggplotly(
           permit1 %>%
             ggplot(aes(x = permit, y = n_incidents, color = state)) +
             geom_jitter(show.legend = FALSE) +
@@ -336,7 +330,9 @@ server <- function(input, output) {
 # of the data and just scaled down the x and y axis values.            
             
                    scale_y_log10() +
-                   scale_x_log10() 
+                   scale_x_log10() ) %>%
+            style(hoverinfo = "text",
+                  hovertext = paste("State:", permit1$state))
         })
         
                 
@@ -536,7 +532,6 @@ server <- function(input, output) {
                 unique() %>%
                 arrange(desc(permit))  %>%
                 slice(1:10) 
-            
             
 # I call ggplot in order to create a graph with my permit_2013 data I created in
 # the previous step. I reordered the x and y axises in order to create a graph
