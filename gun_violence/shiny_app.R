@@ -174,7 +174,24 @@ br(),
                         h4("States that did not require gun registration:"),
                         plotOutput("statepolicy2"),
                         h5("States that required gun registration in 2013 and 2014 did not see a significant decrease in the number of 
-                           gun violence incidents.")),
+                           gun violence incidents."),
+                        br(),
+                        h4("States that have a waiting period law"),
+                        plotOutput("statepolicy3"),
+                        h4("States that do not have a waiting period law"),
+                        plotOutput("statepolicy4"),
+                        h4("States that have a ban on assault weapons"),
+                        plotOutput("statepolicy5"),
+                        h4("States that do not have a ban on assault weapons"),
+                        plotOutput("statepolicy6"),
+                        h4("States that have an open carry policy"),
+                        plotOutput("statepolicy7"),
+                        h4("States that do not have an open carry policy"),
+                        plotOutput("statepolicy8"),
+                        h4("States that have a stand your ground policy"),
+                        plotOutput("statepolicy9"),
+                        h4("States that do not have a stand your ground policy"),
+                        plotOutput("statepolicy10")),
 
 # Here, I format my purpose and conclusions tab.
 # Remember that h3 is bigger than h5 (smaller numbers means bigger text).
@@ -412,15 +429,131 @@ server <- function(input, output) {
             
             filter(w_guncontrol_registration_requir == "FALSE") %>%
             group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
-            summarise(n_incidents = n()) 
+            summarise(n_incidents1 = n()) 
           
 # Since the states have longer titles, I wanted to put them on the y-axis.           
       
-          ggplot(incidents_regis_requir2, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
+          ggplot(incidents_regis_requir2, aes(x = reorder(state, n_incidents1), y = n_incidents1, fill = state)) +
             geom_col(show.legend = FALSE) +
             coord_flip() +
             labs(x = "State", y = "Number of Incidents")
         })
+        
+        
+        output$statepolicy3 <- renderPlot({
+          incidents_waiting1 <- policy_and_checks %>%
+            filter(year == input$year) %>%
+            filter(w_guncontrol_waitingperiod == "TRUE") %>%
+            group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
+            summarise(n_incidents2 = n())           
+          
+          ggplot(incidents_waiting1, aes(x = reorder(state, n_incidents2), y = n_incidents2, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents")
+        
+        })
+        
+        output$statepolicy4 <- renderPlot({
+          incidents_waiting2 <- policy_and_checks %>%
+            filter(year == input$year) %>%
+            filter(w_guncontrol_waitingperiod == "FALSE") %>%
+            group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
+            summarise(n_incidents3 = n())         
+          
+          ggplot(incidents_waiting2, aes(x = reorder(state, n_incidents3), y = n_incidents3, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents")
+          
+        })
+        
+        output$statepolicy5 <- renderPlot({
+          incidents_assault1 <- policy_and_checks %>%
+            filter(year == input$year) %>%
+            filter(guncontrol_assaultweapon_ban == "TRUE") %>%
+            group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
+            summarise(n_incidents4 = n())           
+          
+          ggplot(incidents_assault1, aes(x = reorder(state, n_incidents4), y = n_incidents4, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents")
+          
+        })
+        
+        output$statepolicy6 <- renderPlot({
+          incidents_assault2 <- policy_and_checks %>%
+            filter(year == input$year) %>%
+            filter(guncontrol_assaultweapon_ban == "FALSE") %>%
+            group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
+            summarise(n_incidents5 = n())           
+          
+          ggplot(incidents_assault2, aes(x = reorder(state, n_incidents5), y = n_incidents5, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents")
+          
+        })
+        
+        output$statepolicy7 <- renderPlot({
+          incidents_open1 <- policy_and_checks %>%
+            filter(year == input$year) %>%
+            filter(guncontrol_opencarry == "TRUE") %>%
+            group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
+            summarise(n_incidents6 = n())           
+          
+          ggplot(incidents_open1, aes(x = reorder(state, n_incidents6), y = n_incidents6, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents")
+          
+        })
+        
+        
+        output$statepolicy8 <- renderPlot({
+          incidents_open2 <- policy_and_checks %>%
+            filter(year == input$year) %>%
+            filter(guncontrol_opencarry == "FALSE") %>%
+            group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
+            summarise(n_incidents7 = n())           
+          
+          ggplot(incidents_open2, aes(x = reorder(state, n_incidents7), y = n_incidents7, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents")
+          
+        })
+        
+        output$statepolicy9 <- renderPlot({
+          incidents_stand1 <- policy_and_checks %>%
+            filter(year == input$year) %>%
+            filter(guncontrol_stand_your_ground == "TRUE") %>%
+            group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
+            summarise(n_incidents8 = n())           
+          
+          ggplot(incidents_stand1, aes(x = reorder(state, n_incidents8), y = n_incidents8, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents")
+          
+        })
+        
+        output$statepolicy10 <- renderPlot({
+          incidents_stand2 <- policy_and_checks %>%
+            filter(year == input$year) %>%
+            filter(guncontrol_stand_your_ground == "FALSE") %>%
+            group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
+            summarise(n_incidents9 = n())           
+          
+          ggplot(incidents_stand2, aes(x = reorder(state, n_incidents9), y = n_incidents9, fill = state)) +
+            geom_col(show.legend = FALSE) +
+            coord_flip() +
+            labs(x = "State", y = "Number of Incidents")
+          
+        })
+        
+        
         
 # This plot is a graph of my regression. I made sure to call renderPlot
 # rather than renderPlotly here because my graph is a plot rather than a 
