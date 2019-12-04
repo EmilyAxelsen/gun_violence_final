@@ -7,3 +7,7 @@ For my final project, I was intrigued by the connection between gun violence and
 # *Repo Guide:*
 
 /gun_violence: Folder with my Shiny App files
+
+/final data: Folder with my final RDS files
+
+data.R: Prep file compiling multiple datasets into a single RDS file
