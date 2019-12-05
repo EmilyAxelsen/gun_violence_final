@@ -129,10 +129,12 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     plotlyOutput("regressionsssgraph"),
                                     h5("The x-axis is scaled by log in order to better see the points."),
                                     h5("Notice that for a fixed number of permits, the South has more gun violence incidents than average as most of the data points for the South are above the line of best fit."),
+                                    h5("Please double click on the region at right to only see the observations from that region."),
                                     h3("Number of Permits Granted and Gun Violence Incidents By State"),
                                     h4("An Analysis of the 50 US States"),
                                     plotlyOutput("regressiongraph"),
-                                    h5("The confidence intervals are small because there are over 227,000 gun violence incidents in my dataset.")),
+                                    h5("The confidence intervals are small because there are over 227,000 gun violence incidents in my dataset."),
+                                    h5("Please double click on the state at right to only see the observations from that state.")),
                            
                            # My Regression Coefficient Plot tab calls the regressiondata output defined
                            # in my server. 
