@@ -599,7 +599,7 @@ server <- function(input, output) {
       # Next, I create a regular bar plot and remember to set show.legend = 
       # FALSE since I don't want to include a legend in my plot. 
       
-      ggplot(aes(x = month, y = permit, fill = month)) + 
+      ggplot(aes(x = month, y = permit, fill = month, color = month)) + 
       geom_bar(stat = 'identity', show.legend = FALSE) +
       labs(x = "Month", 
            y = "Number of Permits Granted") +
