@@ -11,6 +11,8 @@ library(gt)
 library(plotly)
 library(scales)
 library(tidyverse)
+library(htmltools)
+library(vembedr)
 
 # Reading in rds file with my final data
 
@@ -41,10 +43,12 @@ new_data2 <- final_gun_violence_data %>%
 # shinytheme as "flatly." I also add the navbarPage function to add a title
 # to my shiny app.
 
+
+
 ui <- fluidPage(theme = shinytheme("flatly"),
-                
+          
                 navbarPage("More Permits More Problems? Tracing Factors Correlated to Gun Violence",
-                           
+                        
                            # I'm adding my tabPanel called "2013-2017 Gun Violence in March" and calling the 
                            # selectInput I defined in the server for the "chosenyear" variable. I ask the 
                            # user to select the year and use the unique function to get a year from my dataset. 
@@ -198,6 +202,12 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     plotOutput("statepolicy10"),
                                     h5("Stand your ground policies allow people to use firearms to defend themselves without first trying to negotiate or retreat.")),
                            
+                           tabPanel("Video"),
+                           h3("Video Walkthrough of Gun Violence Project Shiny App"),
+                           h5("A brief summary of the highlights of my project."),
+                           embed_youtube("n1KaiZ679OA", width = 500, height = 280, allowfullscreen = TRUE),
+                           
+                           
                            # Here, I format my purpose and conclusions tab.
                            # Remember that h3 is bigger than h5 (smaller numbers means bigger text).
                            
@@ -249,6 +259,9 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                              The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most 
                              concentrated. Users may also hover over each point to see more information about the point. The regression 
                              coefficient plot is a visual representation of my linear regression.")),
+                                    
+                
+                                    
                            )))
 
 # This is the start of my server section, rather than the ui section.    
