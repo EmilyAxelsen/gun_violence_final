@@ -202,10 +202,10 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     plotOutput("statepolicy10"),
                                     h5("Stand your ground policies allow people to use firearms to defend themselves without first trying to negotiate or retreat.")),
                            
-                           tabPanel("Video"),
+                           tabPanel("Video",
                            h3("Video Walkthrough of Gun Violence Project Shiny App"),
                            h5("A brief summary of the highlights of my project."),
-                           embed_youtube("n1KaiZ679OA", width = 500, height = 280, allowfullscreen = TRUE),
+                           embed_youtube("n1KaiZ679OA", width = 500, height = 280, allowfullscreen = TRUE)),
                            
                            
                            # Here, I format my purpose and conclusions tab.
