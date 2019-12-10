@@ -247,8 +247,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                       h3("About Me"),
                                       h5("Hi! My name is Emily Axelsen and I am first-year student at Harvard College studying History and passionate about data science and R."),
                                       h5("This project was created for a course called Gov 1005: Data Science fall semester 2019."),
-                                      h5("Contact me at emilyaxelsen@college.harvard.edu."),
-                                      h5("The code for my Shiny App can be found at my ", a("GitHub", href="https://github.com/EmilyAxelsen"),"."),
+                                      h5("Contact me at emilyaxelsen@college.harvard.edu or connect with me on ", a("LinkedIn", href="https://www.linkedin.com/in/emily-axelsen/"),"."),
+                                      h5("The code for my Shiny App can be found at my ", a("GitHub", href="https://github.com/EmilyAxelsen/gun_violence_final"),"."),
                                       h3("Site Navigation"),
                                       h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well 
                              as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits 
@@ -424,7 +424,8 @@ server <- function(input, output) {
       filter(year == input$year) %>%
       filter(w_guncontrol_registration_requir == "TRUE") %>%
       group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
-      summarise(n_incidents = n()) 
+      summarise(n_incidents = n()) %>%
+      arrange(desc(n_incidents))
     
     # Remember that setting fill equal to the values on the x or y axis results
     # in different color bar plots. 
@@ -455,6 +456,7 @@ server <- function(input, output) {
       geom_col(show.legend = FALSE) +
       coord_flip() +
       labs(x = "State", y = "Number of Incidents")
+    
   })
   
   
