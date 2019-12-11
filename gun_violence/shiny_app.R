@@ -15,12 +15,12 @@ library(tidyverse)
 library(htmltools)
 library(vembedr)
 
-# Reading in rds file with my final data
+# Reading in RDS files with my final data.
+# By assigning the RDS files to variables, I can then easily call the 
+# variables later in my code. 
 
 final_gun_violence_data <- read_rds("final data copy/final_data.rds")
-
 state_policy <- read_rds("final data copy/state_policy.rds")
-
 policy_and_checks <- read_rds("final data copy/policy_and_checks.rds")
 
 # After I had already read in my rds file with my final data, I decided that I
@@ -43,8 +43,6 @@ new_data2 <- final_gun_violence_data %>%
 # Here, I'm defining my ui. First, I use the fluidPage function to define my
 # shinytheme as "flatly." I also add the navbarPage function to add a title
 # to my shiny app.
-
-
 
 ui <- fluidPage(theme = shinytheme("flatly"),
           
@@ -260,9 +258,6 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                              The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most 
                              concentrated. Users may also hover over each point to see more information about the point. The regression 
                              coefficient plot is a visual representation of my linear regression.")),
-                                    
-                
-                                    
                            )))
 
 # This is the start of my server section, rather than the ui section.    
@@ -347,7 +342,6 @@ server <- function(input, output) {
   # interact with. In order to make the ggplotly, I simply wrapped my 
   # ggplot with the ggplotly function. 
   
-  
   # Graph with 95% confidence intervals instead of each data point itself.
   
   output$regressiongraph <- renderPlotly({
@@ -361,7 +355,6 @@ server <- function(input, output) {
         labs(x = "Average Permits Granted Per Month", 
              y = "Number of Gun Violence Incidents") +
         
-        
         # I scaled the x and y axes by log10 in order to see the data easier. 
         # I chose to scale the x and y axis in order to maintain the validity 
         # of the data and just scaled down the x and y axis values.            
@@ -371,7 +364,6 @@ server <- function(input, output) {
       style(hoverinfo = "text",
             hovertext = paste("State:", permit1$state))
   })
-  
   
   output$regressionsssgraph <- renderPlotly({
     permit2 <- final_gun_violence_data %>%
@@ -419,6 +411,12 @@ server <- function(input, output) {
   # for the year that the user specifies with input$year. 
   # Next, I make a graph with the states that require gun registration. 
   # I also find the number of incidents by summarising n. 
+  
+  # Please note that for the state policy graphs, once I created the
+  # first two graphs I was able to mostly copy and paste the graphs for
+  # the other state policies adjusting for the new variable names. 
+  # However, since the graphs are basically the same for each of the
+  # state policy graphs, I did not write as many comments for the plots. 
   
   output$statepolicy1 <- renderPlot({
     incidents_regis_requir <- policy_and_checks %>%
@@ -650,21 +648,48 @@ server <- function(input, output) {
   
   output$originalcoef <- renderPlot({
     permit1 <- final_gun_violence_data %>%
+      
+  # Here, I group by the year, state, permit, and population before
+  # summarizing to get the number of incidents. 
+      
       group_by(year, state, permit, population) %>% 
       summarise(n_incidents = n()) 
+    
+  # Here, I create a multivariate linear regression within my ggplot
+  # by having the permit and population as independent variables that
+  # the dependent variable n_incidents relies on. 
     
     ggplot(
       m1 <- lm(n_incidents ~ permit + population, data = permit1))
     
+  # In order to create a coef plot, I call the coefplot function and
+  # assign it to A so I can then call theme_bw() on the coefplot to 
+  # make the background black and white. 
+    
     A <- coefplot(m1)
     A + theme_bw() + 
+      
+  # Here, I rename the y-axis variables with the function scale_y_discrete
+  # and rename the x-axis variables with scale_x_continuous. 
+      
       scale_y_discrete(labels=c("Constant", "Permit", "Population")) +
       scale_x_continuous(name="Regression Estimate") +
+      
+  # I wanted to specify the title with h3 rather than printing out a graph
+  # with a title already which is why I set title equalt to nothing in 
+  # quotations.
+      
       labs(title = "")
     
   })
   
   output$regressiondata <- renderPlot({
+    
+  # Here I repeat the same process as the previous linear regression with the
+  # permit and population as independent variables and the number of incidents
+  # as the independent varibale. The only difference is that I wrap state and
+  # year with as.factor functions in order to get them as factors. I also 
+  # specify my data as permit1 which I also did for the former linear regression.
     
     ggplot(
       
@@ -676,9 +701,20 @@ server <- function(input, output) {
     # is from the library coefplot.            
     
     B <- coefplot(m2, coefficients = c("permit", "population"))
+    
+    # I again call the theme_bw() function on the coefplot that I named B. 
+    
     B + theme_bw() + 
+      
+    # Wtih the scale_y_discrete and scale_x_discrete functions, I was able
+    # to rename the labels on the x and y axis.
+      
       scale_y_discrete(labels=c("Permit", "Population")) +
       scale_x_continuous(name="Regression Estimate") +
+      
+    # Didn't want a title on my graph so I set title equal to empty
+    # parenthesis. 
+      
       labs(title = "")
     
   })
