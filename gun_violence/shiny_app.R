@@ -1,3 +1,4 @@
+
 # Reading in libraries
 
 library(shiny)
@@ -459,6 +460,8 @@ server <- function(input, output) {
     
   })
   
+  # This graph plots states that do have a waiting period
+  # requirement. 
   
   output$statepolicy3 <- renderPlot({
     incidents_waiting1 <- policy_and_checks %>%
@@ -474,6 +477,9 @@ server <- function(input, output) {
     
   })
   
+  # This graph plots the states that do not have a waiting 
+  # period requirement. 
+  
   output$statepolicy4 <- renderPlot({
     incidents_waiting2 <- policy_and_checks %>%
       filter(year == input$year) %>%
@@ -487,6 +493,8 @@ server <- function(input, output) {
       labs(x = "State", y = "Number of Incidents")
     
   })
+  
+  # Graphing states that do have a ban on assault weapons.
   
   output$statepolicy5 <- renderPlot({
     incidents_assault1 <- policy_and_checks %>%
@@ -502,6 +510,8 @@ server <- function(input, output) {
     
   })
   
+  # Graphing states that do not have a ban on assault weapons.
+  
   output$statepolicy6 <- renderPlot({
     incidents_assault2 <- policy_and_checks %>%
       filter(year == input$year) %>%
@@ -515,6 +525,8 @@ server <- function(input, output) {
       labs(x = "State", y = "Number of Incidents")
     
   })
+  
+  # This graph is for states that do have an open carry policy.
   
   output$statepolicy7 <- renderPlot({
     incidents_open1 <- policy_and_checks %>%
@@ -530,6 +542,8 @@ server <- function(input, output) {
     
   })
   
+  # This graph plots the gun violence incidents in states that
+  # do not have an open carry policy.
   
   output$statepolicy8 <- renderPlot({
     incidents_open2 <- policy_and_checks %>%
@@ -545,6 +559,9 @@ server <- function(input, output) {
     
   })
   
+  # Here, I'm making a graph for states that have stand_your_ground
+  # policies. 
+  
   output$statepolicy9 <- renderPlot({
     incidents_stand1 <- policy_and_checks %>%
       filter(year == input$year) %>%
@@ -559,6 +576,10 @@ server <- function(input, output) {
     
   })
   
+  # Making a graph for states that do not have a stand your ground policy.
+  # Other than replacing the variable with guncontrol_stand_your_ground, the 
+  # code for this graph is the same as the code for my other previous graphs.
+  
   output$statepolicy10 <- renderPlot({
     incidents_stand2 <- policy_and_checks %>%
       filter(year == input$year) %>%
@@ -572,8 +593,6 @@ server <- function(input, output) {
       labs(x = "State", y = "Number of Incidents")
     
   })
-  
-  
   
   # This plot is a graph of my regression. I made sure to call renderPlot
   # rather than renderPlotly here because my graph is a plot rather than a 
@@ -727,3 +746,5 @@ server <- function(input, output) {
 # and the server as the server that I also defined in my code. 
 
 shinyApp(ui = ui, server = server)
+
+
