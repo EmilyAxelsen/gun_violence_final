@@ -112,7 +112,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                            
                            tabPanel("More Permits = More Gun Violence?",
                                     h3("The states that granted a high number of permits in 2013 also saw a high number of gun violence incidents."),
-                                    h4("Notice that 4 of the 8 highlighted states are in the south."),
+                                    h4("Notice that 4 of the 9 highlighted states are in the south."),
                                     imageOutput("graph3")),
                            
                            # Next, I'm making my Regression tab.
@@ -156,8 +156,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     h5("The intercept is also known as the constant value and is thus the expected regression estimate."),
                                     h3("Fixed effects model (omitting the intercept)"),
                                     plotOutput("regressiondata"),
-                                    h5("In the plots, a positive coefficient indicates a positve relationship with the dependent variable while a negative
-                           coefficient indicates a negative relaitonship with the dependent variable."),
+                                    h5("In the plots, a positive coefficient indicates a positive relationship with the dependent variable while a negative
+                           coefficient indicates a negative relationship with the dependent variable."),
                                     h5("Therefore, a higher population indicates more gun violence incidents while more permits leads to a slight decrease
                            in the number of gun violence incidents.")),
                            
@@ -222,7 +222,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                       h5("Therefore, an increase in background checks is often spurred by a fear of more restrictive gun laws."),
                                       h6("To read more about the increase in gun violence permits, please see the ", a("USA Today Article.", href="https://www.usatoday.com/story/news/politics/2019/11/25/fbi-background-checks-rise-amid-mass-shootings-calls-gun-control/4228725002/")),
                                       h3("Conclusions"),
-                                      h5("In 2013, the number of permits sold increased between January and June, the month in which the most permits were sold, before decreasing. In 2014, the most permits were sold in March and decreased July and November. In 2015, March was the month in which the second most number of permits were sold. Permits sold generally decreased in the summer months of 2015. In 2016, the most number of permits were sold in March and permits sold increased between May and July. Finally in 2017, the number of permits sold decreased after reaching a high point in March. Therefore, March is most commonly the month where the most permits were sold. This is significant because more guns in March would therefore lead to more gun violence incidents in the summer months. Furthermore, Kentucky was most often the state that granted the most number of permits over much larger states. This is especially significant given that the population of Kentucky is about 4 million people while the population of California is about 40 million."),
+                                      h5("In 2013, the number of permits sold increased between January and June, the month in which the most permits were sold, before decreasing. In 2014, the most permits were sold in March and decreased July and November. In 2015, March was the month in which the second most number of permits were sold. Permits sold generally decreased in the summer months of 2015. In 2016, the most number of permits were sold in March and permits sold increased between May and July. Finally in 2017, the number of permits sold decreased after reaching a high point in March. Therefore, March is most commonly the month where the most permits were sold. This is significant because more guns in March would therefore lead to more gun violence incidents in the summer months. Furthermore, Kentucky was most often the state that granted the most number of permits over much larger states. This is especially significant given that the population of Kentucky is about 4 million people while the population of California is about 40 million ", a("(source)", href="https://www.census.gov/search-results.html?searchType=web&cssp=SERP&q=state%20population"), "."),
                                       h5("An increase in permits granted correlates to higher numbers of gun violence incidents. For a fixed number of 
                             permits, southern states have more gun violence incidents than the midwest, northeast, and west. Western states 
                             had the most spread out gun violence incidents when compared to the average number of permits granted per month. 
