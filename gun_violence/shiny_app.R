@@ -419,20 +419,32 @@ server <- function(input, output) {
   # state policy graphs, I did not write as many comments for the plots. 
   
   output$statepolicy1 <- renderPlot({
+    # incidents_regis_requir <- policy_and_checks %>%
+    #   filter(year == input$year) %>%
+    #   filter(w_guncontrol_registration_requir == "TRUE") %>%
+    #   group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
+    #   summarise(n_incidents = n()) %>%
+    #   arrange(desc(n_incidents))
+    
     incidents_regis_requir <- policy_and_checks %>%
       filter(year == input$year) %>%
       filter(w_guncontrol_registration_requir == "TRUE") %>%
-      group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
-      summarise(n_incidents = n()) %>%
-      arrange(desc(n_incidents))
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% select(state, capita) %>% unique()
     
     # Remember that setting fill equal to the values on the x or y axis results
     # in different color bar plots. 
     
-    ggplot(incidents_regis_requir, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
+    # ggplot(incidents_regis_requir, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
+    #   geom_col(show.legend = FALSE) +
+    #   coord_flip() +
+    #   labs(x = "State", y = "Number of Incidents")
+    
+    ggplot(incidents_regis_requir, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
   })
   
   # Here, I make my state policy graph remembering to set the year equal to 
