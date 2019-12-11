@@ -10,3 +10,4 @@ For my final project, I was intrigued by the connection between gun violence and
 
 data.R: Prep file compiling multiple datasets into a single RDS file
 
+.gitignore: File that specifies which files I want Git to ignore
