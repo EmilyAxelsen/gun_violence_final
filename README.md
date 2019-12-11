@@ -6,14 +6,14 @@ For my final project, I was intrigued by the connection between gun violence and
 
 # Repo Guide:
 
-/gun_violence: Folder with my Shiny App files
+*/gun_violence*: Folder with my Shiny App files
 
-Within /gun_violence:
-   1. /final data copy: Folder with my RDS files
-   2. /www: Folder with my PDF file
-   3. *.png: Image files I use for my "Which states granted the most permits?" tab
-   4. shiny_app.R: My Shiny App file
+Within */gun_violence*:
+   1. */final data copy*: Folder with my RDS files
+   2. */www*: Folder with my PDF file
+   3. *.png:* Image files I use for my "Which states granted the most permits?" tab
+   4. *shiny_app.R*: My Shiny App file
 
-data.R: Prep file compiling multiple datasets into a single RDS file
+*data.R*: Prep file compiling multiple datasets into a single RDS file
 
-.gitignore: File that specifies which files I want Git to ignore
+*.gitignore*: File that specifies which files I want Git to ignore
