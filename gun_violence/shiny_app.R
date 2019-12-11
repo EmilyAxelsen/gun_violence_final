@@ -165,6 +165,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                            
                            tabPanel("State Policy Correlation",
                                     h3("Do state-wide gun registration requirements lead to less gun violence incidents?"),
+                                    h4("Number of incidents per million people."),
                                     br(),
                                     
                                     # SelectInput creates a dropdown bar where you can select the year.
@@ -431,7 +432,9 @@ server <- function(input, output) {
       filter(w_guncontrol_registration_requir == "TRUE") %>%
       group_by(state) %>% 
       mutate(capita = (n() / population)*1000000) %>% 
-      arrange(desc(capita)) %>% select(state, capita) %>% unique()
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()
     
     # Remember that setting fill equal to the values on the x or y axis results
     # in different color bar plots. 
@@ -458,15 +461,19 @@ server <- function(input, output) {
       # is therefore FALSE in the dataset. 
       
       filter(w_guncontrol_registration_requir == "FALSE") %>%
-      group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
-      summarise(n_incidents1 = n()) 
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()
+    
     
     # Since the states have longer titles, I wanted to put them on the y-axis.           
     
-    ggplot(incidents_regis_requir2, aes(x = reorder(state, n_incidents1), y = n_incidents1, fill = state)) +
+    ggplot(incidents_regis_requir2, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
     
   })
   
@@ -477,13 +484,16 @@ server <- function(input, output) {
     incidents_waiting1 <- policy_and_checks %>%
       filter(year == input$year) %>%
       filter(w_guncontrol_waitingperiod == "TRUE") %>%
-      group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
-      summarise(n_incidents2 = n())           
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()        
     
-    ggplot(incidents_waiting1, aes(x = reorder(state, n_incidents2), y = n_incidents2, fill = state)) +
+    ggplot(incidents_waiting1, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
     
   })
   
@@ -494,13 +504,16 @@ server <- function(input, output) {
     incidents_waiting2 <- policy_and_checks %>%
       filter(year == input$year) %>%
       filter(w_guncontrol_waitingperiod == "FALSE") %>%
-      group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
-      summarise(n_incidents3 = n())         
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()         
     
-    ggplot(incidents_waiting2, aes(x = reorder(state, n_incidents3), y = n_incidents3, fill = state)) +
+    ggplot(incidents_waiting2, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
     
   })
   
@@ -510,13 +523,16 @@ server <- function(input, output) {
     incidents_assault1 <- policy_and_checks %>%
       filter(year == input$year) %>%
       filter(guncontrol_assaultweapon_ban == "TRUE") %>%
-      group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
-      summarise(n_incidents4 = n())           
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()           
     
-    ggplot(incidents_assault1, aes(x = reorder(state, n_incidents4), y = n_incidents4, fill = state)) +
+    ggplot(incidents_assault1, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
     
   })
   
@@ -526,13 +542,16 @@ server <- function(input, output) {
     incidents_assault2 <- policy_and_checks %>%
       filter(year == input$year) %>%
       filter(guncontrol_assaultweapon_ban == "FALSE") %>%
-      group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
-      summarise(n_incidents5 = n())           
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()            
     
-    ggplot(incidents_assault2, aes(x = reorder(state, n_incidents5), y = n_incidents5, fill = state)) +
+    ggplot(incidents_assault2, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
     
   })
   
@@ -542,13 +561,16 @@ server <- function(input, output) {
     incidents_open1 <- policy_and_checks %>%
       filter(year == input$year) %>%
       filter(guncontrol_opencarry == "TRUE") %>%
-      group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
-      summarise(n_incidents6 = n())           
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()          
     
-    ggplot(incidents_open1, aes(x = reorder(state, n_incidents6), y = n_incidents6, fill = state)) +
+    ggplot(incidents_open1, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
     
   })
   
@@ -559,13 +581,16 @@ server <- function(input, output) {
     incidents_open2 <- policy_and_checks %>%
       filter(year == input$year) %>%
       filter(guncontrol_opencarry == "FALSE") %>%
-      group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
-      summarise(n_incidents7 = n())           
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()           
     
-    ggplot(incidents_open2, aes(x = reorder(state, n_incidents7), y = n_incidents7, fill = state)) +
+    ggplot(incidents_open2, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
     
   })
   
@@ -576,13 +601,16 @@ server <- function(input, output) {
     incidents_stand1 <- policy_and_checks %>%
       filter(year == input$year) %>%
       filter(guncontrol_stand_your_ground == "TRUE") %>%
-      group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
-      summarise(n_incidents8 = n())           
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()           
     
-    ggplot(incidents_stand1, aes(x = reorder(state, n_incidents8), y = n_incidents8, fill = state)) +
+    ggplot(incidents_stand1, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
     
   })
   
@@ -594,13 +622,16 @@ server <- function(input, output) {
     incidents_stand2 <- policy_and_checks %>%
       filter(year == input$year) %>%
       filter(guncontrol_stand_your_ground == "FALSE") %>%
-      group_by(year, state, permit, population, w_guncontrol_waitingperiod) %>% 
-      summarise(n_incidents9 = n())           
+      group_by(state) %>% 
+      mutate(capita = (n() / population)*1000000) %>% 
+      arrange(desc(capita)) %>% 
+      select(state, capita) %>% 
+      unique()          
     
-    ggplot(incidents_stand2, aes(x = reorder(state, n_incidents9), y = n_incidents9, fill = state)) +
+    ggplot(incidents_stand2, aes(x = reorder(state, capita), y = capita, fill = state)) +
       geom_col(show.legend = FALSE) +
       coord_flip() +
-      labs(x = "State", y = "Number of Incidents")
+      labs(x = "State", y = "Per Capita Number of Incidents")
     
   })
   
