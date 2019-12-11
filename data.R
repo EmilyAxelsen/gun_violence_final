@@ -1,5 +1,5 @@
 
-# Leading in libraries
+# Reading in libraries
 
 library(tidyverse)
 library(dplyr)
