@@ -8,12 +8,5 @@ For my final project, I was intrigued by the connection between gun violence and
 
 /gun_violence: Folder with my Shiny App files
 
-/final data: Folder with my final RDS files
-
-/prep_files: Folder with my R Markdown prep files
-
 data.R: Prep file compiling multiple datasets into a single RDS file
 
-final_data.rds: RDS file with my final compiled data set
-
-Graphs.html: HTML file of all gun violence graphs
