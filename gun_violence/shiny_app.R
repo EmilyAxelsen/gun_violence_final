@@ -143,6 +143,11 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                            # in my server. 
                            
                            tabPanel("Regression Coefficient Plot",
+                                    
+                           # Remember to use h3, h4, h5... to define the text size of what you wish to 
+                           # print out in your Shiny app. Larger numbers next to h correlate to smaller
+                           # text (h3 is larger than h5).
+                                    
                                     h3("Coefficient plot with the intercept"),
                                     h4("The following plots estimate the number of gun violence incidents dependent on the number of permits granted and the population."),
                                     plotOutput("originalcoef"),
@@ -178,8 +183,8 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     plotOutput("statepolicy1"),
                                     h4("States that did not require gun registration:"),
                                     plotOutput("statepolicy2"),
-                                    h5("States that required gun registration in 2013 and 2014 did not see a significant decrease in the number of 
-                           gun violence incidents."),
+                                    h5("Fewer states that required gun registration in 2013 and 2014 exceeded 200 per capita incidents than states
+                                       that did not require gun registration."),
                                     br(),
                                     h4("States that have a waiting period law:"),
                                     plotOutput("statepolicy3"),
@@ -202,10 +207,19 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     plotOutput("statepolicy10"),
                                     h5("Stand your ground policies allow people to use firearms to defend themselves without first trying to negotiate or retreat.")),
                            
+                           # I made a new panel for my video that provides a brief explanation of my project.
+                           
                            tabPanel("Video",
-                           h3("Video Walkthrough of Gun Violence Project Shiny App"),
-                           h5("A brief summary of the highlights of my project."),
-                           embed_youtube("n1KaiZ679OA", width = 500, height = 280, allowfullscreen = TRUE)),
+                                    
+                             # Here, I use h3 and h5 to provide descriptive text above my video.
+                                    
+                             h3("Video Walkthrough of Gun Violence Project Shiny App"),
+                             h5("A brief summary of the highlights of my project."),
+                             
+                             # I used the embed_youtube function from the "vembedr" package to 
+                             # include my video. 
+                             
+                             embed_youtube("n1KaiZ679OA", width = 500, height = 280, allowfullscreen = TRUE)),
                            
                            
                            # Here, I format my purpose and conclusions tab.
@@ -348,11 +362,31 @@ server <- function(input, output) {
   output$regressiongraph <- renderPlotly({
     ggplotly(
       permit1 %>%
+        
+        # Setting my x and y axis to permit and n_incidents respectively.
+        # Remember that setting color = state as well as fill = state both
+        # color the bars of the plots. 
+        
         ggplot(aes(x = permit, y = n_incidents, color = state)) +
+        
+        # The geom_jitter function moves the points a bit so they are easier
+        # to see on the graph.
+        
         geom_jitter(show.legend = FALSE) +
-        geom_smooth(method = 'lm',col = 'black')+
-        scale_x_continuous(limits = c(0, 20000))+
+        
+        # The geom_smooth function adds a regression line. Method specifies
+        # the linear model while col specifies the color as black.
+        
+        geom_smooth(method = 'lm', col = 'black') +
+        
+        # Here, I specify the maximum values for my x and y axis to make sure
+        # the viewer can read the plots.
+        
+        scale_x_continuous(limits = c(0, 20000)) +
         scale_y_continuous(limits = c(0, 2000)) +
+        
+        # The labs function is used to specify the titles of my x and y axes.
+        
         labs(x = "Average Permits Granted Per Month", 
              y = "Number of Gun Violence Incidents") +
         
@@ -362,12 +396,23 @@ server <- function(input, output) {
         
         scale_y_log10(labels = comma) +
         scale_x_log10(labels = comma) ) %>%
+      
+      # Within the style function, I specify the hover information as text.
+      # Next, I set the hovertext equal to paste with what I want the hover
+      # text to say. In this case, I specify that the text should be the 
+      # state from the permit1 data table. 
+      
       style(hoverinfo = "text",
             hovertext = paste("State:", permit1$state))
   })
   
   output$regressionsssgraph <- renderPlotly({
     permit2 <- final_gun_violence_data %>%
+      
+      # To find the number of incidents, I call the summarise function and
+      # set n_incidents equal to the number of rows with n() since each row
+      # is a specific incident. 
+      
       group_by(year, state, permit, population) %>% 
       summarise(n_incidents = n()) %>%
       
@@ -394,8 +439,16 @@ server <- function(input, output) {
         # Calling the geom_smooth function allowed me to add a regression line.
         
         geom_smooth(method = 'lm', col = 'black') + 
+        
+        # Specify what the labels for the x and y axes are with the labs function.
+        
         labs(x = "Average Permits Granted Per Month", 
              y = "Number of Gun Violence Incidents") +
+        
+        # The scale_y_log10 and similarly the scale_x_log10 function scale down
+        # my x and y axes so we can see the points better. I specified the labels
+        # as commas in order to properly format my numbers. 
+        
         scale_y_log10(labels = comma) +
         scale_x_log10(labels = comma) ) %>%
       
@@ -420,32 +473,57 @@ server <- function(input, output) {
   # state policy graphs, I did not write as many comments for the plots. 
   
   output$statepolicy1 <- renderPlot({
-    # incidents_regis_requir <- policy_and_checks %>%
-    #   filter(year == input$year) %>%
-    #   filter(w_guncontrol_registration_requir == "TRUE") %>%
-    #   group_by(year, state, permit, population, w_guncontrol_registration_requir) %>% 
-    #   summarise(n_incidents = n()) %>%
-    #   arrange(desc(n_incidents))
+
+    # First, I specify the year that I want to filter for by taking the input
+    # of the user of my shiny app. 
     
     incidents_regis_requir <- policy_and_checks %>%
       filter(year == input$year) %>%
+      
+      # I first only want to graph states where the gun registration is required which
+      # is why I set w_guncontrol_registration_requir equal to true. Remember that one
+      # equal sign assigns a value while two equal signs is "equal to."
+      
       filter(w_guncontrol_registration_requir == "TRUE") %>%
+      
+      # I group by state to treat all the entries for each state as for the one state 
+      # rather than separately.
+      
       group_by(state) %>% 
+      
+      # Next, I mutate to find the number of gun violence incidents per capita. I name
+      # my new row capita and duvide n(), the number of incidents, by the population.
+      # I then multiply by 1 million to get the number of gun violence incidents for 
+      # every million people. 
+      
       mutate(capita = (n() / population)*1000000) %>% 
+      
+      # I then arranged capita by descending in order to get the largest bars at
+      # the top which would provide for more efficnet comparison.
+      
       arrange(desc(capita)) %>% 
+      
+      # Then, I selected for only the vales I wanted, in this case state and capita.
+      
       select(state, capita) %>% 
+      
+      # I then called the unique() fucntion to get each state once.
+      
       unique()
     
     # Remember that setting fill equal to the values on the x or y axis results
     # in different color bar plots. 
     
-    # ggplot(incidents_regis_requir, aes(x = reorder(state, n_incidents), y = n_incidents, fill = state)) +
-    #   geom_col(show.legend = FALSE) +
-    #   coord_flip() +
-    #   labs(x = "State", y = "Number of Incidents")
-    
     ggplot(incidents_regis_requir, aes(x = reorder(state, capita), y = capita, fill = state)) +
+      
+      # Remember to set show.legend = FALSE within the geom_col function to hide 
+      # the legend from showing in the graph. 
+      
       geom_col(show.legend = FALSE) +
+      
+      # In order to get horizontal bars rather than vertical bars, I called the
+      # coord_flip function. I also used labs to specify the titles of my axes. 
+      
       coord_flip() +
       labs(x = "State", y = "Per Capita Number of Incidents")
   })
@@ -459,6 +537,9 @@ server <- function(input, output) {
       
       # This graph shows the states where gun registration is not required which
       # is therefore FALSE in the dataset. 
+      # As I previously noted, I copied and pasted the same code for my first 
+      # two state policy graphs and replaced the state policies and whether they
+      # were true or false. 
       
       filter(w_guncontrol_registration_requir == "FALSE") %>%
       group_by(state) %>% 
@@ -466,7 +547,6 @@ server <- function(input, output) {
       arrange(desc(capita)) %>% 
       select(state, capita) %>% 
       unique()
-    
     
     # Since the states have longer titles, I wanted to put them on the y-axis.           
     
@@ -641,12 +721,20 @@ server <- function(input, output) {
   
   output$regressiongraph2 <- renderPlot({
     permit1 <- final_gun_violence_data %>%
+      
+      # Group by the values of year, state, permit, and population to treat
+      # each year and state as a group rather than each entry for a certain
+      # state being treated separately. 
+      
       group_by(year, state, permit, population) %>% 
+      
+      # Use the summarise function to get the number of incidents.
+      
       summarise(n_incidents = n()) 
     
     # Remember that geom_jitter AND geom_smooth are useful when creating
     # regression graphs. Within geom_smooth, I specified the model as 'lm' and 
-    # set the color equal to 'black.           
+    # set the color equal to 'black'.           
     
     permit1 %>%
       ggplot(aes(x = permit, y = n_incidents, color = state)) +
@@ -658,6 +746,10 @@ server <- function(input, output) {
       
       labs(x = "Average Permits Granted Per Month", 
            y = "Number of Gun Violence Incidents") +
+      
+      # Scale_y_continuous and scale_x_continuous with labels set as commas to 
+      # appropriately format my numbers. 
+      
       scale_y_continuous(labels = comma) +
       scale_x_continuous(labels = comma)
   })
@@ -738,6 +830,9 @@ server <- function(input, output) {
       
       m2 <- lm(n_incidents ~ permit + population + as.factor(state) + as.factor(year), data = permit1))
     
+    # I use the summary function to print out a summary of my linear regression 
+    # model. 
+    
     summary(m2)
     
     # Remember that coefplot is a way to visualize the regression and 
@@ -755,7 +850,7 @@ server <- function(input, output) {
       scale_y_discrete(labels=c("Permit", "Population")) +
       scale_x_continuous(name="Regression Estimate") +
       
-    # Didn't want a title on my graph so I set title equal to empty
+    # I didn't want a title on my graph so I set title equal to empty
     # parenthesis. 
       
       labs(title = "")
