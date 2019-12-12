@@ -219,7 +219,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                              # I used the embed_youtube function from the "vembedr" package to 
                              # include my video. 
                              
-                             embed_youtube("n1KaiZ679OA", width = 500, height = 280, allowfullscreen = TRUE)),
+                             embed_youtube("I-14jEmxWrA", width = 500, height = 280, allowfullscreen = TRUE)),
                            
                            
                            # Here, I format my purpose and conclusions tab.
