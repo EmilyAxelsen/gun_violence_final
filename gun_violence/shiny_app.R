@@ -16,8 +16,10 @@ library(htmltools)
 library(vembedr)
 
 # Reading in RDS files with my final data.
-# By assigning the RDS files to variables, I can then easily call the 
-# variables later in my code. 
+# Remember to specify which folder the RDS files are in before a /.
+# For example, here my RDS files are in a folder called "final data 
+# copy." By assigning the RDS files to variables, I can then easily 
+# call the variables later in my code. 
 
 final_gun_violence_data <- read_rds("final data copy/final_data.rds")
 state_policy <- read_rds("final data copy/state_policy.rds")
@@ -27,7 +29,8 @@ policy_and_checks <- read_rds("final data copy/policy_and_checks.rds")
 # didn't want to include the data for 2018 because I only have data for the
 # first 3 months of 2018. Therefore, I filtered to exclude 2018 from my 
 # "new_data" dataset. I also tried to use fct_relevel to get 2013 first
-# in my drop down selection but was not successful. 
+# in my drop down selection but was not successful.
+# Remember that ! means exclude. 
 
 new_data <- final_gun_violence_data %>%
   filter(year != 2018) %>%
@@ -59,7 +62,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     
                                     # I added br() to put in a page break. 
                                     # h3 and h4 define the font size for my text in quotes. Remember that as the number
-                                    # gets smaller, the text gets larger. 
+                                    # gets smaller, the text gets larger (hence h3 is bigger than h4). 
                                     
                                     br(),
                                     h3("How do the number of gun permits vary by month each year 2013-2017?"),
@@ -79,15 +82,15 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     br(),
                                     plotOutput("permiteighteen")),
                            
+                           # Next, I define my next tabPanel as "When and where were the most gun permits granted?"
+                           # I wanted to emphasize certain important information points with page breaks and text 
+                           # in different sizes. 
                            
-                           # Next, I define my next tabPanel as "More Permits = More Gun Violence?"
-                           # I wanted to emphasize certain important information points with page breaks and
-                           # text in different sizes. 
-                           
-                           tabPanel("Which states granted the most permits?",
+                           tabPanel("When and where were the most gun permits granted?",
                                     br(),
                                     h3("Which month granted the most permits per year 2013-2017?"),
-                                    h4("In the month that granted the most permits, what were the ten states that granted the most permits."),
+                                    h4("In the month that granted the most permits, what were the ten states that granted the most 
+                                       permits per year 2013-2017?"),
                                     br(),
                                     
                                     # My slider input defines the values I want on my slider, in this case values 
@@ -98,23 +101,30 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     sliderInput("currentyear",
                                                 "Year", min = 2013, max = 2017, value = 500, animate = TRUE),
                                     
-                                    # I use the imageOutput function in order to call the graphs that I define in 
-                                    # the server as graph and graph 2.
-                                    # I once again provided descriptive information about my graphs.
+                                    # I use the imageOutput function in order to
+                                    # call the graphs that I define in the
+                                    # server as graph and graph 2. I once again
+                                    # provided descriptive information about my
+                                    # graphs.
                                     
                                     imageOutput("graph"),
                                     imageOutput("graph2"),
-                                    h5("In 2014, 2016, and 2017, the highest number of permits were granted in March. Therefore, the number of guns would increase going into the summer months which therefore leads to increased violence according to the data.")),
+                                    h5("In 2014, 2016, and 2017, the highest number of permits were granted in March. 
+                                        Additionally, in 2015, 2016, and 2017 Kentucky was the state that granted the 
+                                        highest number of permits in the month that granted the most permits per 
+                                        year.")),
                            
-                           # Here, I create a new tab called "Additional Data Visualizations for 
-                           # 2013" and print out the gt graph.
+                           # Here, I create a new tab called "More Permits =
+                           # More Gun Violence?" and print out the gt graph.
                            
                            tabPanel("More Permits = More Gun Violence?",
-                                    h3("The states that granted a high number of permits in 2013 also saw a high number of gun violence incidents."),
+                                    h3("The states that granted a high number of permits in 2013 also saw a 
+                                       high number of gun violence incidents."),
                                     h4("Notice that 4 of the 9 highlighted states are in the south."),
                                     imageOutput("graph3")),
                            
-                           # Next, I'm making my Regression tab.
+                           # Next, I'm making my "Visualizing Linear Regressions" 
+                           # tab by calling the tabPanel function.
                            
                            tabPanel("Visualizing Linear Regressions",
                                     
@@ -122,22 +132,28 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     # than just plotOutput as for my regressiongraph.
                                     # However, my regressionsgraph2 is just a plot so I called out plotOutput
                                     # rather than plotlyOutput. 
-                                    # Between my plotOutputs and plotlyOutputs I also added text. 
+                                    # Between my plotOutputs and plotlyOutputs I also added text. Remember to
+                                    # call h3, h4, h5... to add text and adding br() which are page breaks as
+                                    # appropriate. 
                                     
                                     h3("The Impact of Permits Granted on the Number of Gun Violence Incidents"),
+                                    h4("An overview of all gun permits granted and the correlated number of gun violence incidents"),
                                     plotOutput("regressiongraph2"),
                                     h5("All 227,885 data points are shown in the graph above."),
                                     h5("As the number of permits granted increases, the number of gun violence incidents increase"),
                                     h3("Number of Permits Granted and Gun Violence Incidents By Region"),
+                                    h4("A comparison of gun violence in the midwest, northeast, south, and west"),
                                     plotlyOutput("regressionsssgraph"),
-                                    h5("The x-axis is scaled by log in order to better see the points."),
+                                    h5("The x-axis is scaled by log so the points are easier to see."),
                                     h5("Notice that for a fixed number of permits, the South has more gun violence incidents than average as most of the data points for the South are above the line of best fit."),
-                                    h5("Please double click on the region at right to only see the observations from that region."),
+                                    h5("Please double click on the region at right to only see the observations from that region. Hover over a point to see the 
+                                       specific region the point correlates to."),
                                     h3("Number of Permits Granted and Gun Violence Incidents By State"),
-                                    h4("An Analysis of the 50 US States"),
+                                    h4("An Analysis of the 50 States in the United States of America"),
                                     plotlyOutput("regressiongraph"),
                                     h5("The confidence intervals are small because there are over 227,000 gun violence incidents in my dataset."),
-                                    h5("Please double click on the state at right to only see the observations from that state.")),
+                                    h5("Please double click on the state at right to only see the observations from that state. Hover over a point to see the 
+                                       specific state the point correlates to.")),
                            
                            # My Regression Coefficient Plot tab calls the regressiondata output defined
                            # in my server. 
@@ -149,32 +165,42 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                            # text (h3 is larger than h5).
                                     
                                     h3("Coefficient plot with the intercept"),
-                                    h4("The following plots estimate the number of gun violence incidents dependent on the number of permits granted and the population."),
+                                    h4("The following plots estimate the number of gun violence incidents dependent on the number of 
+                                       permits granted and the population."),
+                           
+                                    # In order to print the plot in the Shiny app, 
+                                    # use the plotOuput function.
+                           
                                     plotOutput("originalcoef"),
-                                    h5("In the above plot, the intercept coefficient is much larger than the other coefficients in the regression. 
-                           Therefore, the other coefficients appear to be almost zero. In order to more accurately see the variables in my 
-                           regression, please see the fixed effects model."),
-                                    h5("This coefficient plot shows the estimates for permit and population. The horizontal lines show the 95% confidence
-                           intervals. If we were to get different samples using the same methods, it would be expected that the values of 
-                           permit and population would be within the lines of the confidence interval 95% of the time."),
+                                    h5("In the above plot, the intercept coefficient is much larger than the other coefficients in the 
+                                       regression. Therefore, the other coefficients appear to be almost zero. In order to more 
+                                       accurately see the variables in my regression, please see the fixed effects model."),
+                                    h5("This coefficient plot shows the estimates for permit and population. The horizontal lines 
+                                        show the 95% confidence intervals. If we were to get different samples using the same methods, 
+                                        it would be expected that the values of permit and population would be within the lines of the 
+                                        confidence interval 95% of the time. Although the regression estimates are small values, the 
+                                        permit and population are significant because their estimates are not zero. The
+                                        95% confidence interval indicates that there is a 5% chance of there being no interaction 
+                                        between gun violence and permits and population."),
                                     h5("The intercept is also known as the constant value and is thus the expected regression estimate."),
                                     h3("Fixed effects model (omitting the intercept)"),
                                     plotOutput("regressiondata"),
-                                    h5("In the plots, a positive coefficient indicates a positive relationship with the dependent variable while a negative
-                           coefficient indicates a negative relationship with the dependent variable."),
-                                    h5("Therefore, a higher population indicates more gun violence incidents while more permits leads to a slight decrease
-                           in the number of gun violence incidents.")),
+                                    h5("In the plots, a positive coefficient indicates a positive relationship with the dependent 
+                                        variable while a negative coefficient indicates a negative relationship with the dependent 
+                                        variable."),
+                                    h5("Therefore, a higher population indicates more gun violence incidents while more permits leads 
+                                        to a slight decrease in the number of gun violence incidents.")),
                            
                            # Here, I make my state policy correlation tab and include descriptive text.
                            # Remember that br() causes a page break.
                            
                            tabPanel("State Policy Correlation",
                                     h3("Do state-wide gun registration requirements lead to less gun violence incidents?"),
-                                    h4("Number of incidents per million people."),
+                                    h4("Number of gun violence incidents per million people."),
                                     br(),
                                     
                                     # SelectInput creates a dropdown bar where you can select the year.
-                                    # Depending on the year, U print out two graphs (statepolicy1 and
+                                    # Depending on the year, I print out two graphs (statepolicy1 and
                                     # statepolicy2). 
                                     
                                     selectInput("year",
@@ -183,29 +209,51 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     plotOutput("statepolicy1"),
                                     h4("States that did not require gun registration:"),
                                     plotOutput("statepolicy2"),
-                                    h5("Fewer states that required gun registration in 2013 and 2014 exceeded 200 per capita incidents than states
-                                       that did not require gun registration."),
+                                    h5("Fewer states that required gun registration in 2013 and 2014 exceeded 200 per capita 
+                                       incidents than states that did not require gun registration."),
+                                    
+                                    # Remember that br() is a page break.
+                                    
                                     br(),
                                     h4("States that have a waiting period law:"),
                                     plotOutput("statepolicy3"),
                                     h4("States that do not have a waiting period law:"),
                                     plotOutput("statepolicy4"),
-                                    h5("According to Giffords Law Center, waiting periods mandate that an individual can only gain access to a firearm a certain number of days after buying the firearm. Furthermore, waiting periods are beleived to limit impulsive gun violence actions."),
+                                    
+                                    # In order to add a hyperlink to a word, end the quote, add a comma, start a 
+                                    # new parenthetical expression with the word you want to hyperlink in quotes.
+                                    # Then add the link by setting it equal to href in quotes. 
+                                    # In Shiny, the parenthesis can be very tricky. I paid extra attention to opening
+                                    # and closing paragraphs appropriately. 
+                                    
+                                    h5("According to Giffords Law Center, waiting periods mandate that an individual can 
+                                       only gain access to a firearm after a few days after buying the firearm. Furthermore, 
+                                       waiting periods are believed to limit impulsive gun violence actions ", a("(source)", 
+                                       href = "https://lawcenter.giffords.org/gun-laws/policy-areas/gun-sales/waiting-periods/"), "."),
                                     h4("States that have a ban on assault weapons:"),
                                     plotOutput("statepolicy5"),
                                     h4("States that do not have a ban on assault weapons:"),
-                                    h5("Some states prohibit ownership of assault weapons and often specify what qualifies as an assault weapon."),
+                                    h5("Some states prohibit ownership of assault weapons and often specify what qualifies as 
+                                       an assault weapon ", a("(source)", href = "https://lawcenter.giffords.org/gun-laws/policy-areas/hardware-ammunition/assault-weapons/"), 
+                                       "."),
                                     plotOutput("statepolicy6"),
                                     h4("States that have an open carry policy:"),
                                     plotOutput("statepolicy7"),
                                     h4("States that do not have an open carry policy:"),
                                     plotOutput("statepolicy8"),
-                                    h5("An open carry policy allows people to legally carry firearms openly in public."),
+                                    
+                                    # Remember that adding hyperlinked text goes within a text function (which are h3, h4, h5...).
+                                    
+                                    h5("An open carry policy allows people to legally carry firearms openly in public ", a("(source)", 
+                                       href = "https://lawcenter.giffords.org/gun-laws/policy-areas/guns-in-public/open-carry/"), "."),
                                     h4("States that have a stand your ground policy:"),
                                     plotOutput("statepolicy9"),
                                     h4("States that do not have a stand your ground policy:"),
                                     plotOutput("statepolicy10"),
-                                    h5("Stand your ground policies allow people to use firearms to defend themselves without first trying to negotiate or retreat.")),
+                                    h5("Stand your ground policies allow people to use firearms to defend themselves without first 
+                                       trying to negotiate or retreat ", a("(source)", 
+                                       href = "https://lawcenter.giffords.org/gun-laws/policy-areas/guns-in-public/stand-your-ground-laws/"), 
+                                       ".")),
                            
                            # I made a new panel for my video that provides a brief explanation of my project.
                            
@@ -217,10 +265,11 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                              h5("A brief summary of the highlights of my project."),
                              
                              # I used the embed_youtube function from the "vembedr" package to 
-                             # include my video. 
+                             # include my video. By defining the width and height as well as 
+                             # the option to view the video in full screen, I was able to format
+                             # the video appropriately.
                              
                              embed_youtube("I-14jEmxWrA", width = 500, height = 280, allowfullscreen = TRUE)),
-                           
                            
                            # Here, I format my purpose and conclusions tab.
                            # Remember that h3 is bigger than h5 (smaller numbers means bigger text).
@@ -228,51 +277,87 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                            tabPanel("Purpose and Conclusions",
                                     mainPanel(
                                       h3("Why is analyzing data related to gun violence important?"),
-                                      h5("Every day, 96 people die from gun violence and 222 people are shot and survive ", a("(source)", href="https://www.teamenough.org/gun-violence-statistics"), "Gun violence impacts people of all ages and mass shootings are increasingly common. What are the leading causes of gun violence? What factors lead to an increase in gun violence and what policies fail to make an impact on gun violence?"),
-                                      h5("It is widely accepted that gun violence increases in summer months. An ", a("article", href="https://www.nytimes.com/2018/09/21/upshot/a-rise-in-murder-lets-talk-about-the-weather.html"), "called “A Rise in Murder? Let’s Talk About the Weather,” published in the New York Times in September 2018, suggests that murders increase in summer months. Additionally ", a("Giffords Law Center to Prevent Gun Violence", href="https://lawcenter.giffords.org/resources/publications/shootings-spike-in-summer-months/"), "also argues that the number of murders increase as the temperature increases in summer months. However, just as the effects of gun violence are wide-reaching, impacting individuals as well as community sentiment, I argue that there is no single cause of gun violence in the United States."), 
+                                      h5("Every day, 96 people die from gun violence and 222 people are shot and survive ", a("(source)", 
+                                      href="https://www.teamenough.org/gun-violence-statistics"), "Gun violence impacts people of all ages 
+                                      and mass shootings are increasingly common. What are the leading causes of gun violence? What factors 
+                                      lead to an increase in gun violence and what policies fail to make an impact on gun violence?"),
+                                      h5("It is widely accepted that gun violence increases in summer months. An ", a("article", 
+                                      href="https://www.nytimes.com/2018/09/21/upshot/a-rise-in-murder-lets-talk-about-the-weather.html"), 
+                                      "called “A Rise in Murder? Let’s Talk About the Weather,” published in the New York Times in September 
+                                      2018, suggests that murders increase in summer months. Additionally ", a("Giffords Law Center to Prevent 
+                                      Gun Violence", href="https://lawcenter.giffords.org/resources/publications/shootings-spike-in-summer-months/"), 
+                                      "also argues that the number of murders increase as the temperature increases in summer months. However, just 
+                                      as the effects of gun violence are wide-reaching, impacting individuals as well as community sentiment, I argue 
+                                      that there is no single cause of gun violence in the United States."), 
                                       h3("Why is it important to specifically analyze the number of gun permits granted?"),
                                       h5("On November 25, 2019, USA Today published an article that detailed the sudden increase in 
                            background checks as a result of protests for stricter gun laws following gun violence incidents."),
                                       h5("Therefore, an increase in background checks is often spurred by a fear of more restrictive gun laws."),
-                                      h6("To read more about the increase in gun violence permits, please see the ", a("USA Today Article.", href="https://www.usatoday.com/story/news/politics/2019/11/25/fbi-background-checks-rise-amid-mass-shootings-calls-gun-control/4228725002/")),
+                                      h6("To read more about the increase in gun violence permits, please see the ", a("USA Today Article.", 
+                                      href="https://www.usatoday.com/story/news/politics/2019/11/25/fbi-background-checks-rise-amid-mass-shootings-calls-gun-control/4228725002/")),
                                       h3("Conclusions"),
-                                      h5("In 2013, the number of permits sold increased between January and June, the month in which the most permits were sold, before decreasing. In 2014, the most permits were sold in March and decreased July and November. In 2015, March was the month in which the second most number of permits were sold. Permits sold generally decreased in the summer months of 2015. In 2016, the most number of permits were sold in March and permits sold increased between May and July. Finally in 2017, the number of permits sold decreased after reaching a high point in March. Therefore, March is most commonly the month where the most permits were sold. This is significant because more guns in March would therefore lead to more gun violence incidents in the summer months. Furthermore, Kentucky was most often the state that granted the most number of permits over much larger states. This is especially significant given that the population of Kentucky is about 4 million people while the population of California is about 40 million ", a("(source)", href="https://www.census.gov/search-results.html?searchType=web&cssp=SERP&q=state%20population"), "."),
+                                      h5("In 2013, the number of permits sold increased between January and June, the month in which the most permits were 
+                                          sold, before decreasing. In 2014, the most permits were sold in March and the number decreased July and November. 
+                                          In 2015, March was the month in which the second most number of permits were sold. Permits sold generally decreased 
+                                          in the summer months of 2015. In 2016, the most gun permits were sold in March and permits sold increased between 
+                                          May and July. Finally in 2017, the number of permits sold decreased after reaching a high point in March. Therefore, 
+                                          March is most commonly the month where the most permits were sold. This is significant because more guns in March 
+                                          would therefore lead to more gun violence incidents in the summer months. Furthermore, Kentucky was most often the 
+                                          state that granted the most number of permits over much larger states. This is especially significant given that the 
+                                          population of Kentucky is about 4 million people while the population of California is about 40 million ", 
+                                          a("(source)", href="https://www.census.gov/search-results.html?searchType=web&cssp=SERP&q=state%20population"), "."),
                                       h5("An increase in permits granted correlates to higher numbers of gun violence incidents. For a fixed number of 
-                            permits, southern states have more gun violence incidents than the midwest, northeast, and west. Western states 
-                            had the most spread out gun violence incidents when compared to the average number of permits granted per month. 
-                            Although gun violence activists often call for stricter gun violence policies, such as gun registration, the 
-                            data does not show a significant change in the number of incidents with different gun registration policies. 
-                            In other words, states that required gun registration had very similar rates of gun violence incidents when 
-                            compared to states that did not require gun registrations."))),
-                           
+                                         permits, southern states have more gun violence incidents than the midwest, northeast, and west. Western states 
+                                         had the most spread out gun violence incidents when compared to the average number of permits granted per month. 
+                                         Although gun violence activists often call for stricter gun violence policies, such as gun registration, the 
+                                         data does not show a significant change in the number of incidents with different gun registration policies. 
+                                         In other words, states that required gun registration had very similar rates of gun violence incidents when 
+                                         compared to states that did not require gun registrations."))),
+                              
                            # Finally, I created my About tab and used the textOutput function to define
                            # the text that I want on my About page. 
                            
                            tabPanel("About",
                                     mainPanel(
                                       h3("Data Sources"),
-                                      h5("The plots are created using data from ", a("The National Instant Criminal Background Check System (NICS)", href="https://www.fbi.gov/services/cjis/nics"), ", provided by the Federal Bureau of Investigation. Background checks are strong indicators of the number of firearms sold."),
-                                      h5("Population data was also gathered from ", a("The United States Census Bureau", href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-state-total.html"), ", which gathers population data from the 2010s."),
-                                      h5("In order to find the number of gun violence incidents, I used a ", a("Gun Violence", href="https://www.kaggle.com/jameslko/gun-violence-data"), " data set"),
-                                      h5("The Gun Violence dataset uses data from  which compiled data from ", a("the Gun Violence Archive", href="https://www.gunviolencearchive.org"), " an organization dedicated to providing real-time gun violence data"),
-                                      h5("Finally, I also used a dataset created by the Institute for Public Policy and Social Research called ", a("Correlates of State Policy", href="http://ippsr.msu.edu/public-policy/correlates-state-policy"), ", which includes state policy data related to gun violence, such as states that require gun registration."),
+                                      h5("The plots are created using data from ", a("The National Instant Criminal Background Check System (NICS)", 
+                                          href="https://www.fbi.gov/services/cjis/nics"), ", provided by the Federal Bureau of Investigation. Background 
+                                          checks are strong indicators of the number of firearms sold."),
+                                      h5("Population data was also gathered from ", a("The United States Census Bureau", 
+                                          href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-state-total.html"), ", which gathers 
+                                          population data from the 2010s."),
+                                      
+                                      # Remember h3, h4, h5... define the text size.
+                                      # Add hyperlinks within the text boxes. 
+                                      
+                                      h5("In order to find the number of gun violence incidents, I used a ", a("Gun Violence", 
+                                          href="https://www.kaggle.com/jameslko/gun-violence-data"), " data set"),
+                                          h5("The Gun Violence dataset uses data from  which compiled data from ", a("the Gun Violence Archive", 
+                                      href="https://www.gunviolencearchive.org"), " an organization dedicated to providing real-time gun violence data"),
+                                      h5("Finally, I also used a dataset created by the Institute for Public Policy and Social Research called ", 
+                                         a("Correlates of State Policy", href="http://ippsr.msu.edu/public-policy/correlates-state-policy"), ", which 
+                                         includes state policy data related to gun violence, such as states that require gun registration."),
                                       h5("Citation for State Policy Dataset"),
-                                      h6("Jordan, Marty P. and Matt Grossmann. 2017. The Correlates of State Policy Project v.2.1. East Lansing, MI: Institute for Public Policy and Social Research (IPPSR)."),
+                                      h6("Jordan, Marty P. and Matt Grossmann. 2017. The Correlates of State Policy Project v.2.1. East Lansing, MI: 
+                                         Institute for Public Policy and Social Research (IPPSR)."),
                                       h3("About Me"),
-                                      h5("Hi! My name is Emily Axelsen and I am first-year student at Harvard College studying History and passionate about data science and R."),
+                                      h5("Hi! My name is Emily Axelsen and I am first-year student at Harvard College studying History and passionate 
+                                         about data science and R."),
                                       h5("This project was created for a course called Gov 1005: Data Science fall semester 2019."),
-                                      h5("Contact me at emilyaxelsen@college.harvard.edu or connect with me on ", a("LinkedIn", href="https://www.linkedin.com/in/emily-axelsen/"),"."),
-                                      h5("The code for my Shiny App can be found at my ", a("GitHub", href="https://github.com/EmilyAxelsen/gun_violence_final"),"."),
+                                      h5("Contact me at emilyaxelsen@college.harvard.edu or connect with me on ", a("LinkedIn", 
+                                         href="https://www.linkedin.com/in/emily-axelsen/"),"."),
+                                      h5("The code for my Shiny App can be found at my ", a("GitHub", 
+                                         href="https://github.com/EmilyAxelsen/gun_violence_final"),"."),
                                       h3("Site Navigation"),
                                       h5("In the drop down graphics tab, the graphs show the top ten states that granted the most gun permits as well 
-                             as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits 
-                             granted per month then graphs the top ten states that granted the most permits for that month where the most 
-                             number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents 
-                             per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear 
-                             regression model of the number of permits granted per month in relation to the number of gun violence incidents. 
-                             The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most 
-                             concentrated. Users may also hover over each point to see more information about the point. The regression 
-                             coefficient plot is a visual representation of my linear regression.")),
+                                          as the total number of gun permits granted per month. The slider graphics tab shows the number of gun permits 
+                                          granted per month then graphs the top ten states that granted the most permits for that month where the most 
+                                          number of permits were granted. For the 2013 tab, I also created a gt table which shows the number of incidents 
+                                          per state in the month that granted the most number of permits in 2013. Next, the regression tab shows a linear 
+                                          regression model of the number of permits granted per month in relation to the number of gun violence incidents. 
+                                          The x axis of my first graph is a log of the x axis of my second graph in order to see where the data is most 
+                                          concentrated. Users may also hover over each point to see more information about the point. The regression 
+                                          coefficient plot is a visual representation of my linear regression.")),
                            )))
 
 # This is the start of my server section, rather than the ui section.    
@@ -313,7 +398,8 @@ server <- function(input, output) {
   # specify another renderImage because I wanted two graphs to
   # appear when I specified the year on my slider. I saved my
   # graphs from my R Markdown file as png and specified the path
-  # as equal to my shiny folder. 
+  # as equal to my shiny folder. As a result, in my Shiny app
+  # there are two graphs one above the other.
   
   output$graph2 <- renderImage({
     if(input$currentyear==2013) year <-"2013graph2use.png"
@@ -356,8 +442,6 @@ server <- function(input, output) {
   # Here, I used ggplotly to create a dynamic graph that the user can 
   # interact with. In order to make the ggplotly, I simply wrapped my 
   # ggplot with the ggplotly function. 
-  
-  # Graph with 95% confidence intervals instead of each data point itself.
   
   output$regressiongraph <- renderPlotly({
     ggplotly(
@@ -492,7 +576,7 @@ server <- function(input, output) {
       group_by(state) %>% 
       
       # Next, I mutate to find the number of gun violence incidents per capita. I name
-      # my new row capita and duvide n(), the number of incidents, by the population.
+      # my new row capita and divide n(), the number of incidents, by the population.
       # I then multiply by 1 million to get the number of gun violence incidents for 
       # every million people. 
       
@@ -503,7 +587,7 @@ server <- function(input, output) {
       
       arrange(desc(capita)) %>% 
       
-      # Then, I selected for only the vales I wanted, in this case state and capita.
+      # Then, I selected for only the values I wanted, in this case state and capita.
       
       select(state, capita) %>% 
       
@@ -512,7 +596,7 @@ server <- function(input, output) {
       unique()
     
     # Remember that setting fill equal to the values on the x or y axis results
-    # in different color bar plots. 
+    # in bar plots of different colors. 
     
     ggplot(incidents_regis_requir, aes(x = reorder(state, capita), y = capita, fill = state)) +
       
@@ -811,7 +895,7 @@ server <- function(input, output) {
       scale_x_continuous(name="Regression Estimate") +
       
   # I wanted to specify the title with h3 rather than printing out a graph
-  # with a title already which is why I set title equalt to nothing in 
+  # with a title already which is why I set title equal to nothing in 
   # quotations.
       
       labs(title = "")
@@ -822,7 +906,7 @@ server <- function(input, output) {
     
   # Here I repeat the same process as the previous linear regression with the
   # permit and population as independent variables and the number of incidents
-  # as the independent varibale. The only difference is that I wrap state and
+  # as the independent variable The only difference is that I wrap state and
   # year with as.factor functions in order to get them as factors. I also 
   # specify my data as permit1 which I also did for the former linear regression.
     
@@ -844,7 +928,7 @@ server <- function(input, output) {
     
     B + theme_bw() + 
       
-    # Wtih the scale_y_discrete and scale_x_discrete functions, I was able
+    # With the scale_y_discrete and scale_x_discrete functions, I was able
     # to rename the labels on the x and y axis.
       
       scale_y_discrete(labels=c("Permit", "Population")) +
@@ -854,9 +938,7 @@ server <- function(input, output) {
     # parenthesis. 
       
       labs(title = "")
-    
   })
-  
   
   # Remember that you must specify the output in order to call the
   # output in your ui. 
@@ -883,7 +965,7 @@ server <- function(input, output) {
       slice(1:10) 
     
     # I call ggplot in order to create a graph with my permit_2013 data I created in
-    # the previous step. I reordered the x and y axises in order to create a graph
+    # the previous step. I reordered the x and y axes in order to create a graph
     # that is easier to read. I also chose to fill the bars by state in order to get
     # a more aesthetically appealing graph. Remember to use labs to add titles and 
     # captions for your graphs. I also called the coord_flip() function in order to 
@@ -911,7 +993,8 @@ server <- function(input, output) {
   # output in my ui. 
   
   output$Text_drop_down <- renderText({
-    "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of gunviolencearchive.org, Population data from Census.gov"
+    "Source: The National Instant Criminal Background Check System, Gun Violence Data courtesy of 
+     gunviolencearchive.org, Population data from Census.gov"
   })
 }
 
